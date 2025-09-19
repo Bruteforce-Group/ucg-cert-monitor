@@ -1,0 +1,2 @@
+[console_scripts]
+ucg-cert-monitor = main:cli

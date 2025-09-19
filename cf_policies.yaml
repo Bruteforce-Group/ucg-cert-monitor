@@ -1,0 +1,265 @@
+account_id: your-account-id
+generated_at: '2025-09-06T17:22:29.299092'
+policies:
+- action: block
+  conditions:
+  - field: ssl.certificate.status
+    operator: in
+    values:
+    - invalid
+    - expired
+    - self-signed
+    - revoked
+  description: Block connections to sites with invalid, expired, or self-signed certificates
+  enabled: true
+  name: Block Invalid SSL Certificates
+  priority: 100
+  settings:
+    block_page_enabled: true
+    block_reason: Invalid SSL certificate detected
+    log_enabled: true
+  type: http
+- action: allow
+  conditions:
+  - field: ssl.cipher_suite
+    operator: contains_any
+    values:
+    - RC4
+    - DES
+    - MD5
+    - 'NULL'
+  - field: ssl.version
+    operator: in
+    values:
+    - SSLv2
+    - SSLv3
+    - TLSv1.0
+  description: Warn users about weak encryption protocols and cipher suites
+  enabled: true
+  name: Warn on Weak SSL/TLS
+  priority: 200
+  settings:
+    log_enabled: true
+    warning_enabled: true
+    warning_message: This connection uses weak encryption
+  type: http
+- action: block
+  conditions:
+  - field: ssl.certificate.issuer
+    operator: not_in
+    values:
+    - DigiCert Inc
+    - Let's Encrypt Authority
+    - Amazon
+    - Google Trust Services
+    - Sectigo Limited
+    - GlobalSign
+    - Entrust
+  description: Block connections from certificates issued by untrusted CAs
+  enabled: false
+  name: Block Untrusted Certificate Authorities
+  priority: 150
+  settings:
+    block_page_enabled: true
+    block_reason: Certificate issued by untrusted authority
+    log_enabled: true
+  type: http
+- action: block
+  conditions:
+  - field: ssl.certificate.ct_compliance
+    operator: equals
+    values:
+    - non_compliant
+  - field: host
+    operator: matches_regex
+    values:
+    - .*\.(bank|financial|gov)\..*
+  description: Block certificates not logged in Certificate Transparency logs
+  enabled: true
+  name: Require Certificate Transparency
+  priority: 175
+  settings:
+    block_page_enabled: true
+    block_reason: Certificate not logged in CT logs
+    log_enabled: true
+  type: http
+- action: block
+  conditions:
+  - field: host
+    operator: in
+    values:
+    - '*.company.com'
+    - '*.internal.local'
+  - field: ssl.hsts_enabled
+    operator: equals
+    values:
+    - false
+  description: Ensure HSTS is enabled for critical business applications
+  enabled: true
+  name: Enforce HSTS for Critical Sites
+  priority: 300
+  settings:
+    block_page_enabled: true
+    block_reason: HSTS not enabled on critical site
+    log_enabled: true
+  type: http
+- action: allow
+  conditions:
+  - field: ssl.certificate.days_until_expiry
+    operator: less_than
+    values:
+    - 30
+  description: Block certificates that expire too soon
+  enabled: true
+  name: Block Short Certificate Validity
+  priority: 250
+  settings:
+    log_enabled: true
+    warning_enabled: true
+    warning_message: Certificate expires within 30 days
+  type: http
+- action: block
+  conditions:
+  - field: ssl.certificate.public_key_size
+    operator: less_than
+    values:
+    - 2048
+  description: Block certificates with weak key sizes
+  enabled: true
+  name: Enforce Strong Key Sizes
+  priority: 180
+  settings:
+    block_page_enabled: true
+    block_reason: Certificate uses weak key size
+    log_enabled: true
+  type: http
+- action: block
+  conditions:
+  - field: http.request.uri.scheme
+    operator: equals
+    values:
+    - http
+  - field: http.referer.scheme
+    operator: equals
+    values:
+    - https
+  description: Block HTTP resources loaded over HTTPS pages
+  enabled: true
+  name: Block Mixed Content
+  priority: 320
+  settings:
+    block_page_enabled: true
+    block_reason: Mixed content not allowed
+    log_enabled: true
+  type: http
+- action: block
+  conditions:
+  - field: host
+    operator: matches_regex
+    values:
+    - .*\.(payment|billing|checkout)\..*
+  - field: ssl.certificate.type
+    operator: not_equals
+    values:
+    - extended_validation
+  description: Enforce PCI DSS certificate requirements for payment processing
+  enabled: false
+  name: PCI DSS Certificate Requirements
+  priority: 400
+  settings:
+    block_page_enabled: true
+    block_reason: EV certificate required for payment processing
+    log_enabled: true
+  type: http
+- action: block
+  conditions:
+  - field: host
+    operator: matches_regex
+    values:
+    - .*\.(health|medical|hipaa)\..*
+  - field: ssl.certificate.validation_level
+    operator: in
+    values:
+    - domain_validated
+  description: Enhanced certificate validation for healthcare applications
+  enabled: false
+  name: HIPAA Compliance Certificate Validation
+  priority: 450
+  settings:
+    block_page_enabled: true
+    block_reason: Organization validated certificate required
+    log_enabled: true
+  type: http
+- action: block
+  conditions:
+  - field: host
+    operator: matches_regex
+    values:
+    - .*\.gov$
+    - .*\.mil$
+    - .*\.edu$
+  - field: ssl.certificate.issuer
+    operator: not_contains
+    values:
+    - Government
+    - Federal
+    - DigiCert
+  description: Enhanced validation for government websites
+  enabled: true
+  name: Government Site Certificate Validation
+  priority: 475
+  settings:
+    block_page_enabled: true
+    block_reason: Invalid certificate authority for government site
+    log_enabled: true
+  type: http
+- action: allow
+  conditions:
+  - field: ssl.certificate.fingerprint_changed
+    operator: equals
+    values:
+    - true
+  description: Log certificate changes for monitoring
+  enabled: true
+  name: Monitor Certificate Changes
+  priority: 500
+  settings:
+    alert_enabled: true
+    alert_threshold: 1
+    log_details: full_certificate_info
+    log_enabled: true
+  type: http
+- action: allow
+  conditions:
+  - field: ssl.enabled
+    operator: equals
+    values:
+    - true
+  description: Monitor which CAs are being used across your traffic
+  enabled: true
+  name: Track Certificate Authority Usage
+  priority: 550
+  settings:
+    log_enabled: true
+    log_fields:
+    - ssl.certificate.issuer
+    - ssl.certificate.subject
+    sampling_rate: 0.1
+  type: http
+- action: allow
+  conditions:
+  - field: ssl.certificate.issuer
+    operator: not_in_baseline
+    values:
+    - learned_ca_baseline
+  description: Alert when certificates from new/unknown CAs are encountered
+  enabled: true
+  name: Alert on New Certificate Authorities
+  priority: 525
+  settings:
+    alert_enabled: true
+    alert_message: New certificate authority detected
+    log_enabled: true
+  type: http
+team_name: your-team
+version: '1.0'

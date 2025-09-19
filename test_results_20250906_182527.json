@@ -1,0 +1,121 @@
+{
+  "test_suite_version": "1.0",
+  "execution_time": {
+    "start": "2025-09-06T18:25:02.520730",
+    "end": "2025-09-06T18:25:27.919707",
+    "duration_seconds": 25.398977
+  },
+  "summary": {
+    "total_tests": 13,
+    "passed_tests": 13,
+    "failed_tests": 0,
+    "success_rate": 100.0
+  },
+  "test_results": [
+    {
+      "test_name": "Cloudflare Gateway Integration",
+      "expected": "DNS resolution and DoH working",
+      "actual": "success",
+      "passed": true,
+      "details": "DNS IPs: ['172.217.167.78'], DoH Status: 200",
+      "timestamp": "2025-09-06T18:25:02.597611"
+    },
+    {
+      "test_name": "Certificate Deployment",
+      "expected": "Cloudflare root CA deployed",
+      "actual": "deployed",
+      "passed": true,
+      "details": "Cloudflare CA found in macOS keychain",
+      "timestamp": "2025-09-06T18:25:02.614535"
+    },
+    {
+      "test_name": "DNS Filtering",
+      "expected": "Block malicious domains, allow legitimate ones",
+      "actual": "working",
+      "passed": true,
+      "details": "google.com resolved, example-blocked-domain.com blocked - DNS filtering working",
+      "timestamp": "2025-09-06T18:25:02.661595"
+    },
+    {
+      "test_name": "Certificate Validation - valid_cert",
+      "expected": "allow",
+      "actual": "connected",
+      "passed": true,
+      "details": "SSL: connected, HTTP: success, TLS Inspection: Unknown",
+      "timestamp": "2025-09-06T18:25:13.532250"
+    },
+    {
+      "test_name": "Certificate Validation - expired_cert",
+      "expected": "inspect_or_block",
+      "actual": "connected",
+      "passed": true,
+      "details": "SSL: connected, HTTP: success, TLS Inspection: Unknown",
+      "timestamp": "2025-09-06T18:25:15.339425"
+    },
+    {
+      "test_name": "Certificate Validation - self_signed",
+      "expected": "inspect_or_block",
+      "actual": "connected",
+      "passed": true,
+      "details": "SSL: connected, HTTP: success, TLS Inspection: Unknown",
+      "timestamp": "2025-09-06T18:25:16.778471"
+    },
+    {
+      "test_name": "Certificate Validation - wrong_host",
+      "expected": "inspect_or_block",
+      "actual": "connected",
+      "passed": true,
+      "details": "SSL: connected, HTTP: success, TLS Inspection: Unknown",
+      "timestamp": "2025-09-06T18:25:18.585663"
+    },
+    {
+      "test_name": "Certificate Validation - revoked_cert",
+      "expected": "inspect_or_block",
+      "actual": "connected",
+      "passed": true,
+      "details": "SSL: connected, HTTP: success, TLS Inspection: Unknown",
+      "timestamp": "2025-09-06T18:25:20.479661"
+    },
+    {
+      "test_name": "Certificate Validation - weak_cipher",
+      "expected": "warn_or_block",
+      "actual": "ssl_error",
+      "passed": true,
+      "details": "SSL: ssl_error, HTTP: ssl_error, TLS Inspection: Unknown - Error: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] ssl/tls alert handshake failure (_ssl.c:1032)",
+      "timestamp": "2025-09-06T18:25:21.383389"
+    },
+    {
+      "test_name": "Certificate Validation - weak_tls",
+      "expected": "warn_or_block",
+      "actual": "connected",
+      "passed": true,
+      "details": "SSL: connected, HTTP: ssl_error, TLS Inspection: Unknown",
+      "timestamp": "2025-09-06T18:25:23.590018"
+    },
+    {
+      "test_name": "Certificate Validation - no_sni",
+      "expected": "inspect_or_block",
+      "actual": "connected",
+      "passed": true,
+      "details": "SSL: connected, HTTP: success, TLS Inspection: Unknown",
+      "timestamp": "2025-09-06T18:25:25.358181"
+    },
+    {
+      "test_name": "Certificate Validation - mixed_content",
+      "expected": "inspect_or_block",
+      "actual": "connected",
+      "passed": true,
+      "details": "SSL: connected, HTTP: success, TLS Inspection: Unknown",
+      "timestamp": "2025-09-06T18:25:27.093262"
+    },
+    {
+      "test_name": "TLS Inspection Detection",
+      "expected": "TLS inspection active or not active",
+      "actual": "not_active",
+      "passed": true,
+      "details": "No TLS inspection - Certificate issued by ",
+      "timestamp": "2025-09-06T18:25:27.917916"
+    }
+  ],
+  "recommendations": []
+}

@@ -1,0 +1,14 @@
+{
+  "improvement_session": {
+    "start": "2025-09-06T18:41:27.594833",
+    "end": "2025-09-06T18:44:35.265207",
+    "duration_seconds": 187.670374
+  },
+  "improvements": {
+    "new_rules_created": 10,
+    "rules_skipped": 1,
+    "rules_failed": 2,
+    "total_attempted": 13,
+    "success_rate": 84.61538461538461
+  }
+}

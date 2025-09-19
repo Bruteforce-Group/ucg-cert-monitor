@@ -1,0 +1,431 @@
+Metadata-Version: 2.4
+Name: ucg-cert-monitor
+Version: 1.0.0
+Summary: UCG Certificate Monitor - Real-time certificate monitoring and alerting for Universal Customer Gateways
+Home-page: https://github.com/example/ucg-cert-monitor
+Author: UCG Certificate Monitor Team
+Author-email: admin@example.com
+Project-URL: Bug Reports, https://github.com/example/ucg-cert-monitor/issues
+Project-URL: Source, https://github.com/example/ucg-cert-monitor
+Project-URL: Documentation, https://github.com/example/ucg-cert-monitor/docs
+Keywords: certificate monitoring ucg gateway security tls ssl
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: System Administrators
+Classifier: Topic :: System :: Networking :: Monitoring
+Classifier: Topic :: Security :: Cryptography
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: scapy==2.5.0
+Requires-Dist: pyshark==0.6.0
+Requires-Dist: cryptography==41.0.7
+Requires-Dist: pyOpenSSL==23.3.0
+Requires-Dist: certifi==2023.11.17
+Requires-Dist: requests==2.31.0
+Requires-Dist: urllib3==2.1.0
+Requires-Dist: aiohttp==3.9.1
+Requires-Dist: sqlalchemy==2.0.23
+Requires-Dist: alembic==1.13.1
+Requires-Dist: python-decouple==3.8
+Requires-Dist: pyyaml==6.0.1
+Requires-Dist: python-dotenv==1.0.0
+Requires-Dist: slack-sdk==3.26.1
+Requires-Dist: twilio==8.12.0
+Requires-Dist: flask==3.0.0
+Requires-Dist: flask-socketio==5.3.6
+Requires-Dist: jinja2==3.1.2
+Requires-Dist: prometheus-client==0.19.0
+Requires-Dist: structlog==23.2.0
+Requires-Dist: loguru==0.7.2
+Requires-Dist: schedule==1.2.1
+Requires-Dist: click==8.1.7
+Requires-Dist: rich==13.7.0
+Requires-Dist: python-dateutil==2.8.2
+Requires-Dist: validators==0.22.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0.0; extra == "dev"
+Requires-Dist: pytest-asyncio>=0.20.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.0.0; extra == "dev"
+Requires-Dist: black>=22.0.0; extra == "dev"
+Requires-Dist: flake8>=5.0.0; extra == "dev"
+Requires-Dist: mypy>=0.991; extra == "dev"
+Provides-Extra: dashboard
+Requires-Dist: flask>=2.0.0; extra == "dashboard"
+Requires-Dist: flask-socketio>=5.0.0; extra == "dashboard"
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: project-url
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# UCG Certificate Monitor
+
+A comprehensive certificate monitoring solution for Universal Customer Gateways (UCG) that provides real-time detection and alerting of certificate anomalies.
+
+## Features
+
+### 🔍 **Network-Level Monitoring**
+- **Passive traffic capture** using Scapy to intercept TLS handshakes
+- **Real-time certificate extraction** from all network traffic
+- **Multiple monitoring approaches**: network capture, API polling, and passive collection
+
+### 🔌 **UCG API Integration**
+- **Automatic device discovery** on local networks
+- **Multi-vendor support**: Technicolor/Vantiva, Sagemcom, Arris, Cisco, Motorola
+- **Authenticated API access** with multiple auth methods
+- **Continuous polling** with configurable intervals
+
+### ⚠️ **Intelligent Alert System**
+- **Real-time notifications** via Email, Slack, SMS, and Webhooks
+- **Smart deduplication** to prevent alert spam
+- **Severity-based routing** (LOW, MEDIUM, HIGH, CRITICAL)
+- **Customizable alert rules** and thresholds
+
+### 📊 **Certificate Validation**
+- **Baseline comparison** against known good certificates
+- **Expiry monitoring** with configurable warning periods
+- **Security policy enforcement** (weak algorithms, key sizes)
+- **Change detection** (issuer, fingerprint, subject changes)
+- **Comprehensive logging** and audit trails
+
+### 🗄️ **Data Management**
+- **SQLite database** for certificate storage and history
+- **Automatic baseline learning** from valid certificates
+- **Certificate import/export** functionality
+- **Historical tracking** and statistics
+
+## Installation
+
+### Prerequisites
+
+- Python 3.8 or higher
+- Network access to UCG devices
+- Administrative privileges (for network monitoring)
+
+### Quick Install
+
+```bash
+# Clone the repository
+git clone https://github.com/example/ucg-cert-monitor.git
+cd ucg-cert-monitor
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Install the application
+pip install -e .
+
+# Copy configuration template
+cp .env.example .env
+```
+
+### Configuration
+
+1. **Edit the configuration file** `config/config.yaml`:
+   ```yaml
+   network:
+     interface: "en0"  # Your network interface
+   
+   ucg:
+     api_endpoints:
+       - "https://192.168.1.1/api/v1"  # Your UCG IP
+   
+   alerting:
+     channels:
+       email:
+         enabled: true
+         smtp_server: "smtp.gmail.com"
+   ```
+
+2. **Set environment variables** in `.env`:
+   ```env
+   UCG_USERNAME=admin
+   UCG_PASSWORD=your_password
+   EMAIL_USERNAME=your_email@gmail.com
+   EMAIL_PASSWORD=your_app_password
+   SLACK_WEBHOOK_URL=https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK
+   ```
+
+## Usage
+
+### Start Monitoring
+
+```bash
+# Start the certificate monitor
+ucg-cert-monitor monitor
+
+# Run with custom config
+ucg-cert-monitor monitor --config /path/to/config.yaml
+
+# Run in background (daemon mode)
+ucg-cert-monitor monitor --daemon
+```
+
+### Discover UCG Devices
+
+```bash
+# Discover UCG devices on your network
+ucg-cert-monitor discover
+
+# Example output:
+# Discovered 2 UCG devices:
+# - 192.168.1.1:443 (technicolor)
+# - 192.168.1.254:8080 (vantiva)
+```
+
+### Collect Individual Certificates
+
+```bash
+# Collect and analyze a specific certificate
+ucg-cert-monitor collect --host google.com --port 443
+
+# Example output:
+# Certificate for google.com:443:
+# Subject: CN=*.google.com,O=Google LLC,L=Mountain View,ST=California,C=US
+# Issuer: CN=GTS CA 1C3,O=Google Trust Services LLC,C=US
+# Expires: 2024-03-06 08:17:59
+# Fingerprint: 1a2b3c4d...
+# Valid: True
+```
+
+### View Statistics
+
+```bash
+# Show monitoring statistics
+ucg-cert-monitor stats
+
+# Example output:
+# Certificate Statistics:
+# Baseline certificates: 15
+# Certificates seen (24h): 42
+# Active alerts: 3
+```
+
+## Alert Types
+
+### 🔴 **CRITICAL**
+- **Certificate Expired**: Certificate has passed its expiration date
+- **Revoked Certificate**: Certificate has been revoked by the CA
+
+### 🟠 **HIGH**
+- **Fingerprint Change**: Certificate fingerprint has changed unexpectedly
+- **Issuer Mismatch**: Certificate issuer has changed from baseline
+- **Expiry Soon** (≤7 days): Certificate expires within 7 days
+- **Unknown Certificate**: New certificate detected without baseline
+
+### 🟡 **MEDIUM**
+- **Subject Mismatch**: Certificate subject has changed
+- **Weak Signature**: Certificate uses weak signature algorithm
+- **Expiry Soon** (≤30 days): Certificate expires within 30 days
+
+### 🟢 **LOW**
+- **Information**: General certificate information updates
+
+## Configuration Reference
+
+### Network Monitoring
+
+```yaml
+network:
+  interface: "en0"                    # Network interface to monitor
+  capture_filter: "tcp port 443"     # BPF filter for packet capture
+  promiscuous_mode: true             # Enable promiscuous mode
+  timeout_seconds: 5                 # Packet capture timeout
+```
+
+### UCG Integration
+
+```yaml
+ucg:
+  enabled: true
+  api_endpoints:
+    - "https://192.168.1.1/api/v1"   # UCG API endpoints
+  auth:
+    username: "${UCG_USERNAME}"      # Use environment variables
+    password: "${UCG_PASSWORD}"
+    api_key: "${UCG_API_KEY}"
+  polling_interval: 300              # Seconds between polls
+  discovery_ranges:                  # Network ranges to scan
+    - "192.168.1.0/24"
+    - "10.0.0.0/8"
+```
+
+### Alerting Configuration
+
+```yaml
+alerting:
+  enabled: true
+  channels:
+    email:
+      enabled: true
+      smtp_server: "${SMTP_SERVER}"
+      smtp_port: 587
+      username: "${EMAIL_USERNAME}"
+      password: "${EMAIL_PASSWORD}"
+      from_address: "ucg-monitor@yourdomain.com"
+      to_addresses:
+        - "admin@example.com"
+    
+    slack:
+      enabled: true
+      webhook_url: "${SLACK_WEBHOOK_URL}"
+      channel: "#security-alerts"
+      username: "UCG-CertMonitor"
+    
+    sms:
+      enabled: false
+      twilio_sid: "${TWILIO_SID}"
+      twilio_token: "${TWILIO_TOKEN}"
+      from_number: "+1234567890"
+      to_numbers:
+        - "+1234567891"
+```
+
+### Certificate Validation
+
+```yaml
+certificates:
+  validation_rules:
+    check_expiry: true
+    check_issuer: true
+    check_fingerprint: true
+    check_signature_algorithm: true
+  
+  alert_on:
+    - "issuer_mismatch"
+    - "fingerprint_change"
+    - "expiry_soon"
+    - "unknown_certificate"
+    - "weak_signature"
+  
+  expiry_warning_days: 30            # Days before expiry to alert
+```
+
+## Architecture
+
+```
+┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
+│  Network        │    │  UCG API         │    │  Passive        │
+│  Traffic        │    │  Polling         │    │  Collection     │
+│  Monitor        │    │                  │    │                 │
+└─────────┬───────┘    └─────────┬────────┘    └─────────┬───────┘
+          │                      │                       │
+          └──────────────┬───────────────────────────────┘
+                         │
+                ┌────────▼──────────┐
+                │  Certificate      │
+                │  Validator        │
+                └────────┬──────────┘
+                         │
+                ┌────────▼──────────┐
+                │  Alerting         │
+                │  System           │
+                └────────┬──────────┘
+                         │
+        ┌────────────────┼────────────────┐
+        │                │                │
+   ┌────▼─────┐   ┌──────▼───┐   ┌───────▼──┐
+   │  Email   │   │  Slack   │   │   SMS    │
+   └──────────┘   └──────────┘   └──────────┘
+```
+
+## Security Considerations
+
+⚠️ **Important Security Notes:**
+
+1. **Privileged Access**: Network monitoring requires root/administrator privileges
+2. **Credential Security**: Store credentials in environment variables, never in config files
+3. **Network Exposure**: Be cautious when enabling network monitoring on production networks
+4. **UCG Access**: Use dedicated monitoring accounts with minimal required privileges
+
+<citations>
+<document>
+<document_type>RULE</document_type>
+<document_id>szkZWELfsJoNuyjwmBsooK</document_id>
+</document>
+</citations>
+
+## Troubleshooting
+
+### Common Issues
+
+#### Permission Denied (Network Monitoring)
+```bash
+# Solution: Run with elevated privileges
+sudo ucg-cert-monitor monitor
+
+# Or give capabilities (Linux)
+sudo setcap cap_net_raw,cap_net_admin=eip $(which python3)
+```
+
+#### UCG Authentication Failed
+```bash
+# Check credentials
+ucg-cert-monitor discover
+
+# Verify UCG API endpoints are accessible
+curl -k https://192.168.1.1/api/status
+```
+
+#### No Certificates Detected
+```bash
+# Test passive collection first
+ucg-cert-monitor collect --host google.com --port 443
+
+# Check network interface
+ip link show  # Linux
+ifconfig      # macOS
+```
+
+## Development
+
+### Setup Development Environment
+
+```bash
+# Install development dependencies
+pip install -e ".[dev]"
+
+# Run tests
+pytest
+
+# Format code
+black src/
+
+# Type checking
+mypy src/
+```
+
+### Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests
+5. Submit a pull request
+
+## License
+
+MIT License - see LICENSE file for details.
+
+## Support
+
+- **Issues**: [GitHub Issues](https://github.com/example/ucg-cert-monitor/issues)
+- **Documentation**: [Wiki](https://github.com/example/ucg-cert-monitor/wiki)
+- **Discussions**: [GitHub Discussions](https://github.com/example/ucg-cert-monitor/discussions)
+
+---
+
+**Made with ❤️ for network security professionals**

@@ -1,0 +1,2612 @@
+{
+  "export_metadata": {
+    "export_timestamp": "2025-09-06T19:23:47.674690",
+    "export_source": "Cloudflare Gateway API",
+    "account_id": "0b0ee2b5eaf1fb8a2612e40ab6488052",
+    "total_rules": 60,
+    "api_response_success": true
+  },
+  "gateway_rules": [
+    {
+      "id": "0545c2b3-da86-4f7b-b0da-f7b725441cea",
+      "name": "HTTP: Ensure Business Tools Access",
+      "description": "Ensure critical business tools remain accessible",
+      "precedence": 50,
+      "enabled": true,
+      "action": "allow",
+      "filters": [
+        "http"
+      ],
+      "created_at": "2025-09-06T08:44:35Z",
+      "updated_at": "2025-09-06T08:44:35Z",
+      "deleted_at": null,
+      "traffic": "http.request.host in {\"office.com\" \"microsoft.com\" \"google.com\" \"gmail.com\" \"github.com\" \"stackoverflow.com\" \"cloudflare.com\" \"aws.amazon.com\"}",
+      "identity": "",
+      "device_posture": "",
+      "version": 1,
+      "rule_settings": {},
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "c6c77d41-2674-4f77-af8e-899e3501c9c3",
+      "name": "DNS: Ensure Business DNS Resolution",
+      "description": "Ensure critical business domains resolve correctly",
+      "precedence": 51,
+      "enabled": true,
+      "action": "allow",
+      "filters": [
+        "dns"
+      ],
+      "created_at": "2025-09-06T08:44:35Z",
+      "updated_at": "2025-09-06T08:44:35Z",
+      "deleted_at": null,
+      "traffic": "dns.fqdn in {\"office.com\" \"microsoft.com\" \"google.com\" \"gmail.com\" \"github.com\" \"stackoverflow.com\" \"cloudflare.com\" \"aws.amazon.com\"}",
+      "identity": "",
+      "device_posture": "",
+      "version": 1,
+      "rule_settings": {},
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "baba7562-3574-4e02-9525-3d34c694b0ff",
+      "name": "L4: Block Cryptocurrency Mining",
+      "description": "Block cryptocurrency mining traffic",
+      "precedence": 303,
+      "enabled": true,
+      "action": "block",
+      "filters": [
+        "l4"
+      ],
+      "created_at": "2025-09-06T08:39:33Z",
+      "updated_at": "2025-09-06T08:39:33Z",
+      "deleted_at": null,
+      "traffic": "net.dst.port in {3333 4444 8333 8334 9332 9333 14433 14444 8545 30303}",
+      "identity": "",
+      "device_posture": "",
+      "version": 1,
+      "rule_settings": {},
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "b09f91c7-030e-47bd-8d49-5e8a49c89940",
+      "name": "HTTP: Productivity - Allow Block Page Domains",
+      "description": "Allow access to custom block page domains",
+      "precedence": 500,
+      "enabled": true,
+      "action": "allow",
+      "filters": [
+        "http"
+      ],
+      "created_at": "2025-08-19T21:25:56Z",
+      "updated_at": "2025-08-23T06:12:47Z",
+      "deleted_at": null,
+      "traffic": "http.request.host in {\"cloudflare-dynamic-block-page.bruteforce.workers.dev\" \"block.bozza.au\"}",
+      "identity": "",
+      "device_posture": "",
+      "version": 4,
+      "rule_settings": {},
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "27dfaf5a-1604-4395-8bed-3cdc426b8685",
+      "name": "HTTP: Block Archive Downloads",
+      "description": "Block potentially dangerous archive downloads",
+      "precedence": 501,
+      "enabled": true,
+      "action": "block",
+      "filters": [
+        "http"
+      ],
+      "created_at": "2025-09-06T08:41:59Z",
+      "updated_at": "2025-09-06T08:41:59Z",
+      "deleted_at": null,
+      "traffic": "http.request.uri.path matches \".*\\\\.(zip|rar|7z|tar|gz|bz2)$\" and not(http.request.host in {\"github.com\" \"microsoft.com\" \"apple.com\" \"google.com\"})",
+      "identity": "",
+      "device_posture": "",
+      "version": 1,
+      "rule_settings": {
+        "block_reason": "Archive download from untrusted source blocked"
+      },
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "4eec60af-f6bf-4792-b6df-0088bfd11fcc",
+      "name": "HTTP: Block Suspicious Admin Paths",
+      "description": "Block access to common admin and sensitive paths",
+      "precedence": 502,
+      "enabled": true,
+      "action": "block",
+      "filters": [
+        "http"
+      ],
+      "created_at": "2025-09-06T08:42:00Z",
+      "updated_at": "2025-09-06T08:42:00Z",
+      "deleted_at": null,
+      "traffic": "http.request.uri.path matches \".*(admin|administrator|wp-admin|phpmyadmin|cpanel|webmail|manager|tomcat).*\"",
+      "identity": "",
+      "device_posture": "",
+      "version": 1,
+      "rule_settings": {
+        "block_reason": "Access to admin path blocked"
+      },
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "7994a168-5069-4ffe-a133-b74df14ece6e",
+      "name": "HTTP: Block Script Injections (Fixed)",
+      "description": "Block basic script injection attempts using regex matching",
+      "precedence": 503,
+      "enabled": true,
+      "action": "block",
+      "filters": [
+        "http"
+      ],
+      "created_at": "2025-09-06T08:45:05Z",
+      "updated_at": "2025-09-06T08:45:05Z",
+      "deleted_at": null,
+      "traffic": "http.request.uri matches \".*(\\\\<script|javascript\\\\:|onerror\\\\=).*\"",
+      "identity": "",
+      "device_posture": "",
+      "version": 1,
+      "rule_settings": {
+        "block_reason": "Script injection attempt blocked"
+      },
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "fbaee527-8c01-4c64-9048-a222fd01af1d",
+      "name": "L4: Block P2P and Mining Ports",
+      "description": "Block P2P file sharing and cryptocurrency mining ports",
+      "precedence": 600,
+      "enabled": true,
+      "action": "block",
+      "filters": [
+        "l4"
+      ],
+      "created_at": "2025-09-06T08:42:31Z",
+      "updated_at": "2025-09-06T08:42:31Z",
+      "deleted_at": null,
+      "traffic": "net.dst.port in {1214 4662 4672 6346 6347 6881 6999 3333 4444 8333 8334}",
+      "identity": "",
+      "device_posture": "",
+      "version": 1,
+      "rule_settings": {},
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "d2acb75f-6129-4091-9025-c472a898f4e0",
+      "name": "L4: Block High-Risk Ports",
+      "description": "Block commonly exploited high-risk ports",
+      "precedence": 601,
+      "enabled": true,
+      "action": "block",
+      "filters": [
+        "l4"
+      ],
+      "created_at": "2025-09-06T08:43:01Z",
+      "updated_at": "2025-09-06T08:43:01Z",
+      "deleted_at": null,
+      "traffic": "net.dst.port in {135 139 445 1433 1521 3389 5432 5900 7001 8080 8443}",
+      "identity": "",
+      "device_posture": "",
+      "version": 1,
+      "rule_settings": {},
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "bee3bc80-bd0d-4329-bd0b-0349cbdb8059",
+      "name": "DNS: Block Suspicious TLD Patterns",
+      "description": "Block domains with suspicious patterns",
+      "precedence": 700,
+      "enabled": true,
+      "action": "block",
+      "filters": [
+        "dns"
+      ],
+      "created_at": "2025-09-06T08:43:02Z",
+      "updated_at": "2025-09-06T08:43:02Z",
+      "deleted_at": null,
+      "traffic": "dns.fqdn matches \".*\\\\.(tk|ml|ga|cf|gq)\\\\..*\" or dns.fqdn matches \".*\\\\.(work|click|download|racing)\\\\..*\"",
+      "identity": "",
+      "device_posture": "",
+      "version": 1,
+      "rule_settings": {
+        "block_page_enabled": true,
+        "block_reason": "Suspicious domain pattern blocked"
+      },
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "43294134-bd60-45d9-bf6f-4925d810b59c",
+      "name": "DNS: Block Dynamic DNS Patterns",
+      "description": "Block common dynamic DNS service patterns",
+      "precedence": 701,
+      "enabled": true,
+      "action": "block",
+      "filters": [
+        "dns"
+      ],
+      "created_at": "2025-09-06T08:43:33Z",
+      "updated_at": "2025-09-06T08:43:33Z",
+      "deleted_at": null,
+      "traffic": "dns.fqdn matches \".*\\\\.(duckdns|no-ip|ddns|hopto|zapto)\\\\..*\"",
+      "identity": "",
+      "device_posture": "",
+      "version": 1,
+      "rule_settings": {
+        "block_page_enabled": true,
+        "block_reason": "Dynamic DNS service blocked"
+      },
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "3402a7d0-303c-4252-96a0-9c6cf641c734",
+      "name": "DNS: Enhanced Malware Protection",
+      "description": "Additional malware domain protection",
+      "precedence": 702,
+      "enabled": true,
+      "action": "block",
+      "filters": [
+        "dns"
+      ],
+      "created_at": "2025-09-06T08:43:33Z",
+      "updated_at": "2025-09-06T08:43:33Z",
+      "deleted_at": null,
+      "traffic": "any(dns.security_category[*] in {117 187 83 151}) or any(dns.content_category[*] in {68 83 151})",
+      "identity": "",
+      "device_posture": "",
+      "version": 1,
+      "rule_settings": {
+        "block_page_enabled": true,
+        "block_reason": "Malware domain blocked"
+      },
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "52bd425e-5284-48b0-941b-7affcea1f9b9",
+      "name": "DNS: Productivity - Allow Block Page Domains (DNS)",
+      "description": "Allow DNS resolution for custom block page domains",
+      "precedence": 751,
+      "enabled": true,
+      "action": "allow",
+      "filters": [
+        "dns"
+      ],
+      "created_at": "2025-08-19T21:25:57Z",
+      "updated_at": "2025-08-23T06:55:42Z",
+      "deleted_at": null,
+      "traffic": "dns.fqdn in {\"cloudflare-dynamic-block-page.bruteforce.workers.dev\" \"block.bozza.au\"}",
+      "identity": "",
+      "device_posture": "",
+      "version": 4,
+      "rule_settings": {},
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "6ee8bede-5dcb-46b1-8cc6-06098e22631c",
+      "name": "HTTP: Monitor Social Media Access",
+      "description": "Monitor access to social media sites",
+      "precedence": 800,
+      "enabled": true,
+      "action": "allow",
+      "filters": [
+        "http"
+      ],
+      "created_at": "2025-09-06T08:44:04Z",
+      "updated_at": "2025-09-06T08:44:04Z",
+      "deleted_at": null,
+      "traffic": "http.request.host in {\"facebook.com\" \"twitter.com\" \"instagram.com\" \"tiktok.com\" \"linkedin.com\" \"snapchat.com\"}",
+      "identity": "",
+      "device_posture": "",
+      "version": 1,
+      "rule_settings": {},
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "f1396d2b-7baa-45f3-9d12-f4c483482f89",
+      "name": "HTTP: Monitor File Upload Activity (Fixed)",
+      "description": "Monitor file upload activity for security using regex matching",
+      "precedence": 801,
+      "enabled": true,
+      "action": "allow",
+      "filters": [
+        "http"
+      ],
+      "created_at": "2025-09-06T08:45:06Z",
+      "updated_at": "2025-09-06T08:45:06Z",
+      "deleted_at": null,
+      "traffic": "http.request.method == \"POST\" and http.request.uri.path matches \".*upload.*\"",
+      "identity": "",
+      "device_posture": "",
+      "version": 1,
+      "rule_settings": {},
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "67d0224e-ef48-47a3-9dab-e12ac6f49efe",
+      "name": "HTTP: Custom - Security: Block Suspicious File Downloads",
+      "description": "Block downloads of potentially dangerous file types",
+      "precedence": 1000,
+      "enabled": true,
+      "action": "block",
+      "filters": [
+        "http"
+      ],
+      "created_at": "2025-08-15T05:49:48Z",
+      "updated_at": "2025-08-19T18:05:37Z",
+      "deleted_at": null,
+      "traffic": "http.request.uri.path matches \".*\\.(exe|scr|bat|cmd|pif|com|vbs|msi)$\" and not(http.request.host in {\"radar.cloudflare.com\" \"cloud.google.com\" \"apis.google.com\" \"gcs-us-00003.content-storage-download.googleapis.com\"})",
+      "identity": "",
+      "device_posture": "",
+      "version": 6,
+      "rule_settings": {},
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "537a9331-b81a-4038-a3db-4f4d169f4350",
+      "name": "DNS: Block Adult Content",
+      "description": "Block adult content domains",
+      "precedence": 1001,
+      "enabled": false,
+      "action": "block",
+      "filters": [
+        "dns"
+      ],
+      "created_at": "2025-09-06T08:20:16Z",
+      "updated_at": "2025-09-06T08:20:16Z",
+      "deleted_at": null,
+      "traffic": "any(dns.content_category[*] in {4})",
+      "identity": "",
+      "device_posture": "",
+      "version": 1,
+      "rule_settings": {
+        "block_page_enabled": true,
+        "block_reason": "Blocked: Adult content"
+      },
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "64f7a317-ed01-4e95-9eb0-bc6091612e11",
+      "name": "DNS: Block Gambling (Optional)",
+      "description": "Block gambling websites",
+      "precedence": 1002,
+      "enabled": false,
+      "action": "block",
+      "filters": [
+        "dns"
+      ],
+      "created_at": "2025-09-06T08:21:37Z",
+      "updated_at": "2025-09-06T08:21:37Z",
+      "deleted_at": null,
+      "traffic": "any(dns.content_category[*] in {23})",
+      "identity": "",
+      "device_posture": "",
+      "version": 1,
+      "rule_settings": {
+        "block_page_enabled": true,
+        "block_reason": "Blocked: Gambling site"
+      },
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "04f1cb23-8053-4305-ae12-7d2b5991599d",
+      "name": "DNS: Custom - Security: Compromised Domain",
+      "description": "",
+      "precedence": 1502,
+      "enabled": true,
+      "action": "block",
+      "filters": [
+        "dns"
+      ],
+      "created_at": "2025-08-22T05:07:42Z",
+      "updated_at": "2025-08-22T05:07:58Z",
+      "deleted_at": null,
+      "traffic": "any(dns.security_category[*] in {187})",
+      "identity": "",
+      "device_posture": "",
+      "version": 1,
+      "rule_settings": {
+        "notification_settings": {
+          "enabled": true
+        }
+      },
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "89088143-113e-4f5b-b391-04a72e895fa5",
+      "name": "DNS: Custom - Security: Block Malware",
+      "description": "Security blocking rule that prevents access to potentially harmful or unauthorized content.",
+      "precedence": 2000,
+      "enabled": true,
+      "action": "block",
+      "filters": [
+        "dns"
+      ],
+      "created_at": "2025-08-14T09:46:35Z",
+      "updated_at": "2025-08-22T05:06:14Z",
+      "deleted_at": null,
+      "traffic": "any(dns.security_category[*] in {117})",
+      "identity": "",
+      "device_posture": "",
+      "version": 8,
+      "rule_settings": {
+        "notification_settings": {
+          "enabled": true
+        }
+      },
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "172795d7-8ae9-4a2e-b78c-d0351e90b8aa",
+      "name": "TLS Policy - Block Expired Certificate Sites",
+      "description": "Block access to sites known to have expired SSL certificates for testing",
+      "precedence": 2001,
+      "enabled": true,
+      "action": "block",
+      "filters": [
+        "http"
+      ],
+      "created_at": "2025-09-06T07:54:07Z",
+      "updated_at": "2025-09-06T07:54:07Z",
+      "deleted_at": null,
+      "traffic": "http.request.host == \"expired.badssl.com\"",
+      "identity": "",
+      "device_posture": "",
+      "version": 1,
+      "rule_settings": {
+        "block_reason": "Expired SSL certificate detected - blocked by TLS security policy"
+      },
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "e1dd7f20-8937-4e09-b52b-b1f29d96c125",
+      "name": "TLS Policy - Block Self-Signed Certificate Sites",
+      "description": "Block access to sites with self-signed SSL certificates for testing",
+      "precedence": 2002,
+      "enabled": true,
+      "action": "block",
+      "filters": [
+        "http"
+      ],
+      "created_at": "2025-09-06T07:54:38Z",
+      "updated_at": "2025-09-06T07:54:38Z",
+      "deleted_at": null,
+      "traffic": "http.request.host == \"self-signed.badssl.com\"",
+      "identity": "",
+      "device_posture": "",
+      "version": 1,
+      "rule_settings": {
+        "block_reason": "Self-signed SSL certificate detected - blocked by TLS security policy"
+      },
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "2abd52a1-6f5c-4172-8831-720b0b654438",
+      "name": "TLS Policy - Block Revoked Certificate Sites",
+      "description": "Block access to sites with revoked SSL certificates for testing",
+      "precedence": 2003,
+      "enabled": true,
+      "action": "block",
+      "filters": [
+        "http"
+      ],
+      "created_at": "2025-09-06T07:54:38Z",
+      "updated_at": "2025-09-06T07:54:38Z",
+      "deleted_at": null,
+      "traffic": "http.request.host == \"revoked.badssl.com\"",
+      "identity": "",
+      "device_posture": "",
+      "version": 1,
+      "rule_settings": {
+        "block_reason": "Revoked SSL certificate detected - blocked by TLS security policy"
+      },
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "fc94708e-c874-4032-bda2-0bf8d643ff1a",
+      "name": "TLS Policy - Block Weak Encryption Sites",
+      "description": "Block access to sites using weak encryption (RC4, old TLS)",
+      "precedence": 2004,
+      "enabled": true,
+      "action": "block",
+      "filters": [
+        "http"
+      ],
+      "created_at": "2025-09-06T07:55:11Z",
+      "updated_at": "2025-09-06T07:55:11Z",
+      "deleted_at": null,
+      "traffic": "http.request.host in {\"rc4.badssl.com\" \"tls-v1-0.badssl.com\" \"tls-v1-1.badssl.com\"}",
+      "identity": "",
+      "device_posture": "",
+      "version": 1,
+      "rule_settings": {
+        "block_reason": "Weak encryption detected - blocked by TLS security policy"
+      },
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "bfc47f3f-bf8c-481c-b315-ff47767793a4",
+      "name": "TLS Policy - Block Invalid Hostname Sites",
+      "description": "Block access to sites with SSL certificate hostname mismatches",
+      "precedence": 2005,
+      "enabled": true,
+      "action": "block",
+      "filters": [
+        "http"
+      ],
+      "created_at": "2025-09-06T07:55:12Z",
+      "updated_at": "2025-09-06T07:55:12Z",
+      "deleted_at": null,
+      "traffic": "http.request.host in {\"wrong.host.badssl.com\" \"untrusted-root.badssl.com\"}",
+      "identity": "",
+      "device_posture": "",
+      "version": 1,
+      "rule_settings": {
+        "block_reason": "SSL certificate hostname mismatch detected - blocked by TLS security policy"
+      },
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "93db8913-b130-4d43-9419-717893951706",
+      "name": "TLS Policy - Monitor Certificate Test Sites",
+      "description": "Log access to certificate testing sites for monitoring",
+      "precedence": 2010,
+      "enabled": true,
+      "action": "allow",
+      "filters": [
+        "http"
+      ],
+      "created_at": "2025-09-06T07:57:36Z",
+      "updated_at": "2025-09-06T07:57:36Z",
+      "deleted_at": null,
+      "traffic": "http.request.host matches \".*\\.badssl\\.com$\"",
+      "identity": "",
+      "device_posture": "",
+      "version": 1,
+      "rule_settings": {
+        "payload_log": {
+          "enabled": true
+        },
+        "untrusted_cert": {
+          "action": "pass_through"
+        }
+      },
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "143ffd73-663c-47da-87b5-3443eae4638f",
+      "name": "Network: Allow HTTPS",
+      "description": "Explicitly allow HTTPS traffic",
+      "precedence": 2100,
+      "enabled": true,
+      "action": "allow",
+      "filters": [
+        "l4"
+      ],
+      "created_at": "2025-09-06T08:22:39Z",
+      "updated_at": "2025-09-06T08:22:39Z",
+      "deleted_at": null,
+      "traffic": "net.dst.port == 443",
+      "identity": "",
+      "device_posture": "",
+      "version": 1,
+      "rule_settings": {},
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "0f4f70e4-0340-4bc2-afdb-7975b1c91f95",
+      "name": "HTTP: Custom - Network Security: Block Dangerous File Downloads",
+      "description": "Block downloads of executable files and scripts",
+      "precedence": 3000,
+      "enabled": true,
+      "action": "block",
+      "filters": [
+        "http"
+      ],
+      "created_at": "2025-08-15T05:50:43Z",
+      "updated_at": "2025-08-19T18:05:39Z",
+      "deleted_at": null,
+      "traffic": "http.request.uri.path matches \".*\\.(exe|scr|bat|cmd|pif|com|vbs|msi|deb|rpm)$\"",
+      "identity": "",
+      "device_posture": "",
+      "version": 4,
+      "rule_settings": {
+        "block_reason": "Dangerous file type blocked"
+      },
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "407d74af-c5ce-444c-9207-df31b6d4d998",
+      "name": "HTTP: Block Social Media (Optional)",
+      "description": "Block major social media platforms",
+      "precedence": 3001,
+      "enabled": false,
+      "action": "block",
+      "filters": [
+        "http"
+      ],
+      "created_at": "2025-09-06T08:23:10Z",
+      "updated_at": "2025-09-06T08:23:10Z",
+      "deleted_at": null,
+      "traffic": "http.request.host == \"facebook.com\"",
+      "identity": "",
+      "device_posture": "",
+      "version": 1,
+      "rule_settings": {
+        "block_reason": "Blocked: Social media restricted"
+      },
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "33656020-e1ec-4f05-91ed-2c030ac76cc6",
+      "name": "DNS: Bootstrap Security Categories",
+      "description": "Bootstrap: Block domains in security threat categories",
+      "precedence": 3002,
+      "enabled": true,
+      "action": "block",
+      "filters": [
+        "dns"
+      ],
+      "created_at": "2025-09-06T09:19:06Z",
+      "updated_at": "2025-09-06T09:19:06Z",
+      "deleted_at": null,
+      "traffic": "any(dns.security_category[*] in {68 178 80 187 83 176 175 117 131 188 134 191 151 153})",
+      "identity": "",
+      "device_posture": "",
+      "version": 1,
+      "rule_settings": {
+        "block_page_enabled": true,
+        "block_reason": "Security threat category blocked"
+      },
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "2d84312b-b601-4352-89fe-5eebdc961fec",
+      "name": "HTTP: Allow Business Tools",
+      "description": "Ensure business tools are accessible",
+      "precedence": 3100,
+      "enabled": true,
+      "action": "allow",
+      "filters": [
+        "http"
+      ],
+      "created_at": "2025-09-06T08:23:40Z",
+      "updated_at": "2025-09-06T08:23:40Z",
+      "deleted_at": null,
+      "traffic": "http.request.host == \"office.com\"",
+      "identity": "",
+      "device_posture": "",
+      "version": 1,
+      "rule_settings": {},
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "a52521e9-d130-490d-9745-592c52e7e91e",
+      "name": "HTTP: Bootstrap Security Categories",
+      "description": "Bootstrap: Block HTTP requests to security threat domains",
+      "precedence": 3101,
+      "enabled": true,
+      "action": "block",
+      "filters": [
+        "http"
+      ],
+      "created_at": "2025-09-06T09:19:08Z",
+      "updated_at": "2025-09-06T09:19:08Z",
+      "deleted_at": null,
+      "traffic": "any(http.request.uri.security_category[*] in {68 178 80 187 83 176 175 117 131 188 134 191 151 153})",
+      "identity": "",
+      "device_posture": "",
+      "version": 1,
+      "rule_settings": {
+        "block_reason": "Security threat category blocked"
+      },
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "5d07e914-b001-4da8-8d0c-866ae6c6c267",
+      "name": "HTTP: Bootstrap File Download Security",
+      "description": "Bootstrap: Block dangerous executable downloads",
+      "precedence": 3150,
+      "enabled": true,
+      "action": "block",
+      "filters": [
+        "http"
+      ],
+      "created_at": "2025-09-06T09:19:08Z",
+      "updated_at": "2025-09-06T09:19:08Z",
+      "deleted_at": null,
+      "traffic": "http.request.uri.path matches \".*\\\\.(exe|msi|dll|bat|cmd|scr|ps1|jar|apk|ipa)$\"",
+      "identity": "",
+      "device_posture": "",
+      "version": 1,
+      "rule_settings": {
+        "block_reason": "Dangerous file download blocked"
+      },
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "d916175f-2a52-40b0-a07c-3b41930c4674",
+      "name": "L4: Bootstrap Block High-Risk Countries",
+      "description": "Bootstrap: Block traffic to high-risk countries",
+      "precedence": 3200,
+      "enabled": true,
+      "action": "block",
+      "filters": [
+        "l4"
+      ],
+      "created_at": "2025-09-06T09:19:10Z",
+      "updated_at": "2025-09-06T09:19:10Z",
+      "deleted_at": null,
+      "traffic": "net.dst.geo.country == \"RU\" or net.dst.geo.country == \"KP\" or net.dst.geo.country == \"IR\" or net.dst.geo.country == \"SY\"",
+      "identity": "",
+      "device_posture": "",
+      "version": 1,
+      "rule_settings": {},
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "8b501856-4852-4011-a2aa-f536a00144bf",
+      "name": "L4: Productivity (Allow) - Infrastructure: SSH Access Monitoring",
+      "description": "Allows specified traffic to ensure required services and applications function properly.",
+      "precedence": 3250,
+      "enabled": true,
+      "action": "allow",
+      "filters": [
+        "l4"
+      ],
+      "created_at": "2025-08-14T09:48:26Z",
+      "updated_at": "2025-08-22T05:10:52Z",
+      "deleted_at": null,
+      "traffic": "net.dst.port == 22",
+      "identity": "",
+      "device_posture": "",
+      "version": 9,
+      "rule_settings": {},
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "2a384b69-0fa5-4cad-b5c8-37b9dff0e812",
+      "name": "L4: Bootstrap Block Suspicious Ports",
+      "description": "Bootstrap: Block commonly abused ports",
+      "precedence": 3251,
+      "enabled": true,
+      "action": "block",
+      "filters": [
+        "l4"
+      ],
+      "created_at": "2025-09-06T09:19:17Z",
+      "updated_at": "2025-09-06T09:19:17Z",
+      "deleted_at": null,
+      "traffic": "net.dst.port in {1433 3389 5432 1521 3306 5900 6379 27017 9200 11211}",
+      "identity": "",
+      "device_posture": "",
+      "version": 1,
+      "rule_settings": {},
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "64fe8f32-cf65-4d8a-85a4-3f4940d453ba",
+      "name": "HTTP: Custom - Network Security: Block SQL Injection Attempts",
+      "description": "Block common SQL injection patterns",
+      "precedence": 4000,
+      "enabled": true,
+      "action": "block",
+      "filters": [
+        "http"
+      ],
+      "created_at": "2025-08-15T05:50:44Z",
+      "updated_at": "2025-08-19T18:05:40Z",
+      "deleted_at": null,
+      "traffic": "http.request.uri.query matches \".*(SELECT|UNION|INSERT|UPDATE|DELETE).*\"",
+      "identity": "",
+      "device_posture": "",
+      "version": 4,
+      "rule_settings": {
+        "block_reason": "SQL injection attempt blocked"
+      },
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "4fd7fa8d-8931-42cc-bdac-c7ac5018c685",
+      "name": "NETWORK: Block Security Risks",
+      "description": "",
+      "precedence": 4876,
+      "enabled": true,
+      "action": "block",
+      "filters": [
+        "l4"
+      ],
+      "created_at": "2025-08-22T05:10:45Z",
+      "updated_at": "2025-08-22T05:12:12Z",
+      "deleted_at": null,
+      "traffic": "any(net.fqdn.security_category[*] in {68 178 80 187 83 176 175 117 131 188 134 191 151 153})",
+      "identity": "",
+      "device_posture": "",
+      "version": 2,
+      "rule_settings": {
+        "notification_settings": {
+          "enabled": true
+        }
+      },
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "e9ddfb0c-a16c-429c-ac64-ae6a4e56a635",
+      "name": "HTTP: Custom - Network Security: Block XSS Attempts",
+      "description": "Block cross-site scripting attempts",
+      "precedence": 5000,
+      "enabled": true,
+      "action": "block",
+      "filters": [
+        "http"
+      ],
+      "created_at": "2025-08-15T05:50:45Z",
+      "updated_at": "2025-08-19T18:05:41Z",
+      "deleted_at": null,
+      "traffic": "http.request.uri matches \".*(<script|javascript:|onload=|onerror=).*\"",
+      "identity": "",
+      "device_posture": "",
+      "version": 4,
+      "rule_settings": {
+        "block_reason": "XSS attempt blocked"
+      },
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "ddab6d91-54e4-485b-9e6f-a6f237d2b8ca",
+      "name": "HTTP: Custom - Network Security: Block Admin Path Brute Force",
+      "description": "Block suspicious admin path access attempts",
+      "precedence": 6000,
+      "enabled": true,
+      "action": "block",
+      "filters": [
+        "http"
+      ],
+      "created_at": "2025-08-15T05:50:46Z",
+      "updated_at": "2025-08-19T18:05:42Z",
+      "deleted_at": null,
+      "traffic": "http.request.uri.path matches \".*(wp-admin|phpmyadmin|cpanel|admin|administrator).*\" and http.request.method == \"POST\"",
+      "identity": "",
+      "device_posture": "",
+      "version": 4,
+      "rule_settings": {
+        "block_reason": "Admin access attempt blocked"
+      },
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "fd4a56fc-7778-4617-b2c4-10243af26999",
+      "name": "Block Crap",
+      "description": "",
+      "precedence": 6500,
+      "enabled": true,
+      "action": "block",
+      "filters": [
+        "l4"
+      ],
+      "created_at": "2025-08-21T09:24:31Z",
+      "updated_at": "2025-08-21T09:31:07Z",
+      "deleted_at": null,
+      "traffic": "net.dst.ip in $63bfc994-e056-4e12-9f37-79d2f0e62e57 or net.src.ip in $63bfc994-e056-4e12-9f37-79d2f0e62e57 or net.sni.host in $0f0e678c-e907-4f7b-a939-b30e25ed17a6",
+      "identity": "",
+      "device_posture": "",
+      "version": 3,
+      "rule_settings": {
+        "notification_settings": {
+          "enabled": true
+        }
+      },
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "7d8fedc9-adfa-4a83-bae2-f96f089da5dc",
+      "name": "DNS: Custom - Security: Block Botnets",
+      "description": "Security blocking rule that prevents access to potentially harmful or unauthorized content.",
+      "precedence": 7000,
+      "enabled": true,
+      "action": "block",
+      "filters": [
+        "dns"
+      ],
+      "created_at": "2025-08-14T09:47:40Z",
+      "updated_at": "2025-08-22T05:06:03Z",
+      "deleted_at": null,
+      "traffic": "any(dns.security_category[*] in {80})",
+      "identity": "",
+      "device_posture": "",
+      "version": 8,
+      "rule_settings": {
+        "notification_settings": {
+          "enabled": true
+        }
+      },
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "245965ce-e2e1-4ec4-943d-6d1d5e61fc65",
+      "name": "DNS: Custom - Security: Block Phishing",
+      "description": "Security blocking rule that prevents access to potentially harmful or unauthorized content.",
+      "precedence": 8000,
+      "enabled": true,
+      "action": "block",
+      "filters": [
+        "dns"
+      ],
+      "created_at": "2025-08-14T09:46:57Z",
+      "updated_at": "2025-08-22T05:05:50Z",
+      "deleted_at": null,
+      "traffic": "any(dns.security_category[*] in {131})",
+      "identity": "",
+      "device_posture": "",
+      "version": 7,
+      "rule_settings": {
+        "notification_settings": {
+          "enabled": true
+        }
+      },
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "d21d165d-b778-40a2-89cd-c808ebb4429d",
+      "name": "HTTP: Custom - App Control: Block Suspicious Downloads",
+      "description": "Block downloads from suspicious paths",
+      "precedence": 9000,
+      "enabled": true,
+      "action": "block",
+      "filters": [
+        "http"
+      ],
+      "created_at": "2025-08-15T05:50:48Z",
+      "updated_at": "2025-08-19T18:05:53Z",
+      "deleted_at": null,
+      "traffic": "http.request.uri.path matches \".*(tmp|temp|cache).*\\.(zip|rar|7z|tar)$\"",
+      "identity": "",
+      "device_posture": "",
+      "version": 4,
+      "rule_settings": {
+        "block_reason": "Suspicious download blocked"
+      },
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "4faa4e9d-b33c-4ad4-b7ce-3cf5ece005e2",
+      "name": "DNS: Custom - Security: Block Spam",
+      "description": "",
+      "precedence": 9001,
+      "enabled": true,
+      "action": "block",
+      "filters": [
+        "dns"
+      ],
+      "created_at": "2025-08-22T05:06:54Z",
+      "updated_at": "2025-08-22T05:08:14Z",
+      "deleted_at": null,
+      "traffic": "any(dns.security_category[*] in {151})",
+      "identity": "",
+      "device_posture": "",
+      "version": 2,
+      "rule_settings": {
+        "notification_settings": {
+          "enabled": true
+        }
+      },
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "5cecf0a7-970d-42a3-b11e-38456c225705",
+      "name": "DNS: Custom - Security: Block Command & Control",
+      "description": "Security blocking rule that prevents access to potentially harmful or unauthorized content.",
+      "precedence": 10000,
+      "enabled": true,
+      "action": "block",
+      "filters": [
+        "dns"
+      ],
+      "created_at": "2025-08-14T09:47:17Z",
+      "updated_at": "2025-08-19T18:05:55Z",
+      "deleted_at": null,
+      "traffic": "any(dns.security_category[*] in {68})",
+      "identity": "",
+      "device_posture": "",
+      "version": 6,
+      "rule_settings": {},
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "865b40d1-54c6-4301-a0ba-88722638fa00",
+      "name": "DNS: Block All Security Risks",
+      "description": "",
+      "precedence": 10752,
+      "enabled": true,
+      "action": "block",
+      "filters": [
+        "dns"
+      ],
+      "created_at": "2025-08-22T05:04:20Z",
+      "updated_at": "2025-08-22T05:09:57Z",
+      "deleted_at": null,
+      "traffic": "any(dns.security_category[*] in {68 178 83 176 175 188 134 191 153})",
+      "identity": "",
+      "device_posture": "",
+      "version": 3,
+      "rule_settings": {
+        "notification_settings": {
+          "enabled": true
+        }
+      },
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "b2f80827-8306-460c-8cd2-46969fd33cb4",
+      "name": "HTTP: Custom - Risk-Based: Block Common Attack Patterns",
+      "description": "Block common web attack patterns in URLs",
+      "precedence": 11000,
+      "enabled": true,
+      "action": "block",
+      "filters": [
+        "http"
+      ],
+      "created_at": "2025-08-15T05:49:51Z",
+      "updated_at": "2025-08-19T18:05:56Z",
+      "deleted_at": null,
+      "traffic": "http.request.uri.path matches \".*(SELECT|UNION|DROP|INSERT|UPDATE|DELETE|script>|javascript:).*\"",
+      "identity": "",
+      "device_posture": "",
+      "version": 4,
+      "rule_settings": {
+        "block_reason": "Potential attack pattern detected"
+      },
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "c569aa22-085e-4b24-bafb-5a1c57ece8dd",
+      "name": "L4: Custom - Security: Block High-Risk Countries",
+      "description": "Blocks traffic from high-risk geographic regions to reduce security threats and comply with access policies.",
+      "precedence": 13000,
+      "enabled": true,
+      "action": "block",
+      "filters": [
+        "l4"
+      ],
+      "created_at": "2025-08-14T09:48:02Z",
+      "updated_at": "2025-08-19T18:05:57Z",
+      "deleted_at": null,
+      "traffic": "net.src.geo.country in {\"CN\" \"RU\" \"KP\" \"IR\" \"BY\" \"MM\" \"SY\" \"AF\"}",
+      "identity": "",
+      "device_posture": "",
+      "version": 6,
+      "rule_settings": {},
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "6af6bb08-2288-4346-adec-4f081e5e2d5b",
+      "name": "HTTP: Block Security Risks",
+      "description": "",
+      "precedence": 13002,
+      "enabled": true,
+      "action": "block",
+      "filters": [
+        "http"
+      ],
+      "created_at": "2025-08-22T05:11:53Z",
+      "updated_at": "2025-08-23T06:12:34Z",
+      "deleted_at": null,
+      "traffic": "any(http.request.uri.security_category[*] in {68 178 80 187 83 176 175 117 131 188 134 191 151 153})",
+      "identity": "",
+      "device_posture": "",
+      "version": 1,
+      "rule_settings": {
+        "notification_settings": {
+          "enabled": true
+        }
+      },
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "eabdfcbe-d4d6-4327-820e-deb2849dada4",
+      "name": "DNS: Productivity - Social: Allow Grindr (DNS)",
+      "description": "Allow DNS resolution for Grindr app and services\n\n[BACKUP 2025-08-17T02:57:11.209Z] Original traffic filter:\ndns.fqdn in {\"grindr.com\" \"www.grindr.com\" \"api.grindr.com\" \"app.grindr.com\" \"chat.grindr.com\" \"media.grindr.com\" \"images.grindr.com\" \"cdn.grindr.com\" \"push.grindr.com\" \"analytics.grindr.com\" \"static.grindr.com\" \"assets.grindr.com\"}\n\nOptimized using list: Social Media Sites (0df15f7f-dc35-46cb-8ac6-8a827bdbf559)\nDomains replaced: grindr.com, www.grindr.com, api.grindr.com, app.grindr.com, chat.grindr.com, media.grindr.com, images.grindr.com, cdn.grindr.com, push.grindr.com, analytics.grindr.com, static.grindr.com, assets.grindr.com",
+      "precedence": 26000,
+      "enabled": true,
+      "action": "allow",
+      "filters": [
+        "dns"
+      ],
+      "created_at": "2025-08-15T05:07:15Z",
+      "updated_at": "2025-08-27T23:03:05Z",
+      "deleted_at": null,
+      "traffic": "dns.fqdn in $0df15f7f-dc35-46cb-8ac6-8a827bdbf559",
+      "identity": "",
+      "device_posture": "",
+      "version": 7,
+      "rule_settings": {},
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "1dd393bf-33df-44dc-8ed0-9ec59a70edbd",
+      "name": "DNS: Productivity - Allow a.simplemdm.com",
+      "description": "Auto-created rule to allow access to specified domains with security validation",
+      "precedence": 31000,
+      "enabled": true,
+      "action": "allow",
+      "filters": [
+        "dns"
+      ],
+      "created_at": "2025-08-17T11:38:11Z",
+      "updated_at": "2025-08-27T23:03:14Z",
+      "deleted_at": null,
+      "traffic": "dns.fqdn == \"a.simplemdm.com\"",
+      "identity": "",
+      "device_posture": "",
+      "version": 6,
+      "rule_settings": {},
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "ce7cae26-17fd-42a4-8b24-96046102a894",
+      "name": "DNS: Productivity (Allow) - Certificate: OCSP and CRL Infrastructure (DNS)",
+      "description": "Critical: Allow DNS resolution for OCSP responders and CRL servers. Required for certificate revocation checking and browser security.",
+      "precedence": 33000,
+      "enabled": true,
+      "action": "allow",
+      "filters": [
+        "dns"
+      ],
+      "created_at": "2025-08-17T12:59:09Z",
+      "updated_at": "2025-08-27T23:03:19Z",
+      "deleted_at": null,
+      "traffic": "dns.fqdn == \"ocsp.digicert.com\" or dns.fqdn == \"ocsp.sectigo.com\" or dns.fqdn == \"ocsp.comodoca.com\" or dns.fqdn == \"ocsp.globalsign.com\" or dns.fqdn == \"ocsp.entrust.net\" or dns.fqdn == \"ocsp.apple.com\" or dns.fqdn == \"ocsp.godaddy.com\" or dns.fqdn == \"ocsp.thawte.com\" or dns.fqdn == \"ocsp.verisign.com\" or dns.fqdn == \"ocsp.symantec.com\" or dns.fqdn == \"ocsp2.globalsign.com\" or dns.fqdn == \"ocsp.identrust.com\" or dns.fqdn == \"ocsp.usertrust.com\" or dns.fqdn == \"ocsp.trust-provider.com\" or dns.fqdn == \"ocsp.letsencrypt.org\" or dns.fqdn == \"r3.o.lencr.org\" or dns.fqdn == \"r4.o.lencr.org\" or dns.fqdn == \"e1.o.lencr.org\" or dns.fqdn == \"e2.o.lencr.org\" or dns.fqdn == \"x1.o.lencr.org\" or dns.fqdn == \"x2.o.lencr.org\" or dns.fqdn == \"crl.digicert.com\" or dns.fqdn == \"crl.sectigo.com\" or dns.fqdn == \"crl.comodoca.com\" or dns.fqdn == \"crl.globalsign.com\" or dns.fqdn == \"crl.entrust.net\" or dns.fqdn == \"crl.apple.com\" or dns.fqdn == \"crl.godaddy.com\" or dns.fqdn == \"crl.thawte.com\" or dns.fqdn == \"crl.verisign.com\" or dns.fqdn == \"crl.symantec.com\" or dns.fqdn == \"crl3.digicert.com\" or dns.fqdn == \"crl4.digicert.com\" or dns.fqdn == \"crl.identrust.com\" or dns.fqdn == \"crl.usertrust.com\" or dns.fqdn == \"crl.letsencrypt.org\" or dns.fqdn == \"cacerts.digicert.com\" or dns.fqdn == \"secure.globalsign.com\" or dns.fqdn == \"apps.identrust.com\" or dns.fqdn == \"letsencrypt.org\" or dns.fqdn == \"isrg.trustid.ocsp.identrust.com\" or dns.fqdn == \"ocsp.int-x3.letsencrypt.org\" or dns.fqdn == \"ocsp.msocsp.com\" or dns.fqdn == \"crl.microsoft.com\" or dns.fqdn == \"mscrl.microsoft.com\" or dns.fqdn == \"ocsp.rootca.microsoft.com\" or dns.fqdn == \"ocsp.apple.com\" or dns.fqdn == \"ocsp2.apple.com\" or dns.fqdn == \"crl.apple.com\" or dns.fqdn == \"ocsp-lb.apple.com.akadns.net\" or dns.fqdn == \"crl-lb.apple.com.akadns.net\" or dns.fqdn == \"ocsp.pki.goog\" or dns.fqdn == \"crl.pki.goog\" or dns.fqdn == \"pki.goog\" or dns.fqdn == \"status.rapidssl.com\" or dns.fqdn == \"ocsp.rapidssl.com\" or dns.fqdn == \"crl.rapidssl.com\" or dns.fqdn == \"ocsp.ssl.com\" or dns.fqdn == \"crl.ssl.com\"",
+      "identity": "",
+      "device_posture": "",
+      "version": 6,
+      "rule_settings": {},
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "a60a0af0-0dee-4435-9b55-110b2808e525",
+      "name": "DNS: Productivity (Allow) - Certificate: SSL/TLS Validation Services",
+      "description": "Allow access to certificate transparency logs, OCSP responders, and CRL endpoints for SSL/TLS validation.",
+      "precedence": 35000,
+      "enabled": true,
+      "action": "allow",
+      "filters": [
+        "dns"
+      ],
+      "created_at": "2025-08-17T12:44:53Z",
+      "updated_at": "2025-08-27T23:03:22Z",
+      "deleted_at": null,
+      "traffic": "dns.fqdn == \"crt.sh\" or dns.fqdn == \"ct.googleapis.com\" or dns.fqdn == \"ct.cloudflare.com\" or dns.fqdn == \"ocsp.digicert.com\" or dns.fqdn == \"ocsp.letsencrypt.org\" or dns.fqdn == \"crl.digicert.com\" or dns.fqdn == \"crl.letsencrypt.org\" or dns.fqdn == \"r3.o.lencr.org\" or dns.fqdn == \"r4.o.lencr.org\"",
+      "identity": "",
+      "device_posture": "",
+      "version": 6,
+      "rule_settings": {},
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "c7be3bcd-0f64-4708-bca1-754d29632b04",
+      "name": "DNS: Productivity - Allow NPM Registry",
+      "description": "Allow access to NPM registry and related services",
+      "precedence": 44000,
+      "enabled": true,
+      "action": "allow",
+      "filters": [
+        "dns"
+      ],
+      "created_at": "2025-08-17T22:44:52Z",
+      "updated_at": "2025-08-27T23:03:37Z",
+      "deleted_at": null,
+      "traffic": "dns.fqdn in {\"registry.npmjs.org\" \"registry.yarnpkg.com\" \"npmjs.com\" \"yarnpkg.com\"}",
+      "identity": "",
+      "device_posture": "",
+      "version": 6,
+      "rule_settings": {},
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "72edaf60-19db-4d4c-8ed8-0fd3aba3e1d3",
+      "name": "DNS: Productivity - Allow GitHub",
+      "description": "Allow access to GitHub services",
+      "precedence": 45000,
+      "enabled": true,
+      "action": "allow",
+      "filters": [
+        "dns"
+      ],
+      "created_at": "2025-08-17T22:44:52Z",
+      "updated_at": "2025-08-27T23:03:46Z",
+      "deleted_at": null,
+      "traffic": "dns.fqdn in {\"github.com\" \"api.github.com\" \"raw.githubusercontent.com\" \"objects.githubusercontent.com\"}",
+      "identity": "",
+      "device_posture": "",
+      "version": 6,
+      "rule_settings": {},
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "a0146089-9d1a-423a-9eb4-8b94784aea1d",
+      "name": "DNS: Productivity - Allow OpenAI API",
+      "description": "Allow access to OpenAI API endpoints",
+      "precedence": 46000,
+      "enabled": true,
+      "action": "allow",
+      "filters": [
+        "dns"
+      ],
+      "created_at": "2025-08-17T22:44:53Z",
+      "updated_at": "2025-08-27T23:03:30Z",
+      "deleted_at": null,
+      "traffic": "dns.fqdn in {\"api.openai.com\" \"openai.com\"}",
+      "identity": "",
+      "device_posture": "",
+      "version": 6,
+      "rule_settings": {},
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "c73e7a7a-6bab-4d69-87aa-062b0b23e428",
+      "name": "DNS: Productivity - Allow Cloudflare API",
+      "description": "Allow access to Cloudflare API and Worker services",
+      "precedence": 47000,
+      "enabled": true,
+      "action": "allow",
+      "filters": [
+        "dns"
+      ],
+      "created_at": "2025-08-17T22:44:54Z",
+      "updated_at": "2025-08-27T23:03:31Z",
+      "deleted_at": null,
+      "traffic": "dns.fqdn in {\"api.cloudflare.com\" \"workers.dev\" \"*.workers.dev\" \"*.cloudflareclient.com\"}",
+      "identity": "",
+      "device_posture": "",
+      "version": 6,
+      "rule_settings": {},
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "30867815-418f-413d-89f9-3a1572a90b0d",
+      "name": "DNS: Productivity - Allow Apple Homekit and Google Home Ecosystems",
+      "description": "Allow Apple Homekit and Google Home Ecosystems\n\n[BACKUP 2025-08-17T03:17:08.969Z] Original traffic filter:\ndns.fqdn in {\"apple-cloudkit.com\" \"apple-livephotoskit.com\" \"icloud.com\" \"apple.com\" \"googleapis.com\" \"nest.com\" \"google-home.com\" \"gstatic.com\" \"home.nest.com\" \"xmpp-qa.google.com\"} or dns.fqdn matches \"^.*\\.local\\.home$\"\n\nOptimized using list: Business Applications (419dd8d5-b0a0-4892-ab87-9c663735727a)\nDomains replaced: googleapis.com, gstatic.com, xmpp-qa.google.com\n\n[BACKUP 2025-08-17T03:19:32.128Z] Original traffic filter:\n(dns.fqdn in $419dd8d5-b0a0-4892-ab87-9c663735727a or dns.fqdn in {\"apple-cloudkit.com\" \"apple-livephotoskit.com\" \"icloud.com\" \"apple.com\" \"nest.com\" \"google-home.com\" \"home.nest.com\"}) or dns.fqdn matches \"^.*\\.local\\.home$\"\n\nOptimized using list: Critical Infrastructure Domains (fa64ba26-c470-4273-b251-c75ce17280b6)\nDomains replaced: icloud.com, apple.com [FIXED: Removed problematic regex anchor]",
+      "precedence": 56000,
+      "enabled": true,
+      "action": "allow",
+      "filters": [
+        "dns"
+      ],
+      "created_at": "2025-08-15T04:05:08Z",
+      "updated_at": "2025-08-27T23:03:41Z",
+      "deleted_at": null,
+      "traffic": "dns.fqdn in $419dd8d5-b0a0-4892-ab87-9c663735727a or (dns.fqdn in $fa64ba26-c470-4273-b251-c75ce17280b6 or dns.fqdn in {\"apple-cloudkit.com\" \"apple-livephotoskit.com\" \"nest.com\" \"google-home.com\" \"home.nest.com\"}) or dns.fqdn matches \".*\\.local\\.home\"",
+      "identity": "",
+      "device_posture": "",
+      "version": 12,
+      "rule_settings": {},
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    },
+    {
+      "id": "28e7ac78-84b9-4e77-b75d-3343461c3f65",
+      "name": "Microsoft 365 Auto Generated",
+      "description": "Bypass HTTPS decryption of Microsoft 365 traffic",
+      "precedence": 126000,
+      "enabled": true,
+      "action": "off",
+      "filters": [
+        "http"
+      ],
+      "created_at": "2025-08-21T01:17:16Z",
+      "updated_at": "2025-08-27T22:45:22Z",
+      "deleted_at": null,
+      "traffic": "any(app.ids[*] in {626 594 635 514 601 596 597 680})",
+      "identity": "",
+      "device_posture": "",
+      "version": 1,
+      "rule_settings": {
+        "biso_admin_controls": {}
+      },
+      "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+    }
+  ],
+  "raw_api_response": {
+    "result": [
+      {
+        "id": "0545c2b3-da86-4f7b-b0da-f7b725441cea",
+        "name": "HTTP: Ensure Business Tools Access",
+        "description": "Ensure critical business tools remain accessible",
+        "precedence": 50,
+        "enabled": true,
+        "action": "allow",
+        "filters": [
+          "http"
+        ],
+        "created_at": "2025-09-06T08:44:35Z",
+        "updated_at": "2025-09-06T08:44:35Z",
+        "deleted_at": null,
+        "traffic": "http.request.host in {\"office.com\" \"microsoft.com\" \"google.com\" \"gmail.com\" \"github.com\" \"stackoverflow.com\" \"cloudflare.com\" \"aws.amazon.com\"}",
+        "identity": "",
+        "device_posture": "",
+        "version": 1,
+        "rule_settings": {},
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "c6c77d41-2674-4f77-af8e-899e3501c9c3",
+        "name": "DNS: Ensure Business DNS Resolution",
+        "description": "Ensure critical business domains resolve correctly",
+        "precedence": 51,
+        "enabled": true,
+        "action": "allow",
+        "filters": [
+          "dns"
+        ],
+        "created_at": "2025-09-06T08:44:35Z",
+        "updated_at": "2025-09-06T08:44:35Z",
+        "deleted_at": null,
+        "traffic": "dns.fqdn in {\"office.com\" \"microsoft.com\" \"google.com\" \"gmail.com\" \"github.com\" \"stackoverflow.com\" \"cloudflare.com\" \"aws.amazon.com\"}",
+        "identity": "",
+        "device_posture": "",
+        "version": 1,
+        "rule_settings": {},
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "baba7562-3574-4e02-9525-3d34c694b0ff",
+        "name": "L4: Block Cryptocurrency Mining",
+        "description": "Block cryptocurrency mining traffic",
+        "precedence": 303,
+        "enabled": true,
+        "action": "block",
+        "filters": [
+          "l4"
+        ],
+        "created_at": "2025-09-06T08:39:33Z",
+        "updated_at": "2025-09-06T08:39:33Z",
+        "deleted_at": null,
+        "traffic": "net.dst.port in {3333 4444 8333 8334 9332 9333 14433 14444 8545 30303}",
+        "identity": "",
+        "device_posture": "",
+        "version": 1,
+        "rule_settings": {},
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "b09f91c7-030e-47bd-8d49-5e8a49c89940",
+        "name": "HTTP: Productivity - Allow Block Page Domains",
+        "description": "Allow access to custom block page domains",
+        "precedence": 500,
+        "enabled": true,
+        "action": "allow",
+        "filters": [
+          "http"
+        ],
+        "created_at": "2025-08-19T21:25:56Z",
+        "updated_at": "2025-08-23T06:12:47Z",
+        "deleted_at": null,
+        "traffic": "http.request.host in {\"cloudflare-dynamic-block-page.bruteforce.workers.dev\" \"block.bozza.au\"}",
+        "identity": "",
+        "device_posture": "",
+        "version": 4,
+        "rule_settings": {},
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "27dfaf5a-1604-4395-8bed-3cdc426b8685",
+        "name": "HTTP: Block Archive Downloads",
+        "description": "Block potentially dangerous archive downloads",
+        "precedence": 501,
+        "enabled": true,
+        "action": "block",
+        "filters": [
+          "http"
+        ],
+        "created_at": "2025-09-06T08:41:59Z",
+        "updated_at": "2025-09-06T08:41:59Z",
+        "deleted_at": null,
+        "traffic": "http.request.uri.path matches \".*\\\\.(zip|rar|7z|tar|gz|bz2)$\" and not(http.request.host in {\"github.com\" \"microsoft.com\" \"apple.com\" \"google.com\"})",
+        "identity": "",
+        "device_posture": "",
+        "version": 1,
+        "rule_settings": {
+          "block_reason": "Archive download from untrusted source blocked"
+        },
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "4eec60af-f6bf-4792-b6df-0088bfd11fcc",
+        "name": "HTTP: Block Suspicious Admin Paths",
+        "description": "Block access to common admin and sensitive paths",
+        "precedence": 502,
+        "enabled": true,
+        "action": "block",
+        "filters": [
+          "http"
+        ],
+        "created_at": "2025-09-06T08:42:00Z",
+        "updated_at": "2025-09-06T08:42:00Z",
+        "deleted_at": null,
+        "traffic": "http.request.uri.path matches \".*(admin|administrator|wp-admin|phpmyadmin|cpanel|webmail|manager|tomcat).*\"",
+        "identity": "",
+        "device_posture": "",
+        "version": 1,
+        "rule_settings": {
+          "block_reason": "Access to admin path blocked"
+        },
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "7994a168-5069-4ffe-a133-b74df14ece6e",
+        "name": "HTTP: Block Script Injections (Fixed)",
+        "description": "Block basic script injection attempts using regex matching",
+        "precedence": 503,
+        "enabled": true,
+        "action": "block",
+        "filters": [
+          "http"
+        ],
+        "created_at": "2025-09-06T08:45:05Z",
+        "updated_at": "2025-09-06T08:45:05Z",
+        "deleted_at": null,
+        "traffic": "http.request.uri matches \".*(\\\\<script|javascript\\\\:|onerror\\\\=).*\"",
+        "identity": "",
+        "device_posture": "",
+        "version": 1,
+        "rule_settings": {
+          "block_reason": "Script injection attempt blocked"
+        },
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "fbaee527-8c01-4c64-9048-a222fd01af1d",
+        "name": "L4: Block P2P and Mining Ports",
+        "description": "Block P2P file sharing and cryptocurrency mining ports",
+        "precedence": 600,
+        "enabled": true,
+        "action": "block",
+        "filters": [
+          "l4"
+        ],
+        "created_at": "2025-09-06T08:42:31Z",
+        "updated_at": "2025-09-06T08:42:31Z",
+        "deleted_at": null,
+        "traffic": "net.dst.port in {1214 4662 4672 6346 6347 6881 6999 3333 4444 8333 8334}",
+        "identity": "",
+        "device_posture": "",
+        "version": 1,
+        "rule_settings": {},
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "d2acb75f-6129-4091-9025-c472a898f4e0",
+        "name": "L4: Block High-Risk Ports",
+        "description": "Block commonly exploited high-risk ports",
+        "precedence": 601,
+        "enabled": true,
+        "action": "block",
+        "filters": [
+          "l4"
+        ],
+        "created_at": "2025-09-06T08:43:01Z",
+        "updated_at": "2025-09-06T08:43:01Z",
+        "deleted_at": null,
+        "traffic": "net.dst.port in {135 139 445 1433 1521 3389 5432 5900 7001 8080 8443}",
+        "identity": "",
+        "device_posture": "",
+        "version": 1,
+        "rule_settings": {},
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "bee3bc80-bd0d-4329-bd0b-0349cbdb8059",
+        "name": "DNS: Block Suspicious TLD Patterns",
+        "description": "Block domains with suspicious patterns",
+        "precedence": 700,
+        "enabled": true,
+        "action": "block",
+        "filters": [
+          "dns"
+        ],
+        "created_at": "2025-09-06T08:43:02Z",
+        "updated_at": "2025-09-06T08:43:02Z",
+        "deleted_at": null,
+        "traffic": "dns.fqdn matches \".*\\\\.(tk|ml|ga|cf|gq)\\\\..*\" or dns.fqdn matches \".*\\\\.(work|click|download|racing)\\\\..*\"",
+        "identity": "",
+        "device_posture": "",
+        "version": 1,
+        "rule_settings": {
+          "block_page_enabled": true,
+          "block_reason": "Suspicious domain pattern blocked"
+        },
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "43294134-bd60-45d9-bf6f-4925d810b59c",
+        "name": "DNS: Block Dynamic DNS Patterns",
+        "description": "Block common dynamic DNS service patterns",
+        "precedence": 701,
+        "enabled": true,
+        "action": "block",
+        "filters": [
+          "dns"
+        ],
+        "created_at": "2025-09-06T08:43:33Z",
+        "updated_at": "2025-09-06T08:43:33Z",
+        "deleted_at": null,
+        "traffic": "dns.fqdn matches \".*\\\\.(duckdns|no-ip|ddns|hopto|zapto)\\\\..*\"",
+        "identity": "",
+        "device_posture": "",
+        "version": 1,
+        "rule_settings": {
+          "block_page_enabled": true,
+          "block_reason": "Dynamic DNS service blocked"
+        },
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "3402a7d0-303c-4252-96a0-9c6cf641c734",
+        "name": "DNS: Enhanced Malware Protection",
+        "description": "Additional malware domain protection",
+        "precedence": 702,
+        "enabled": true,
+        "action": "block",
+        "filters": [
+          "dns"
+        ],
+        "created_at": "2025-09-06T08:43:33Z",
+        "updated_at": "2025-09-06T08:43:33Z",
+        "deleted_at": null,
+        "traffic": "any(dns.security_category[*] in {117 187 83 151}) or any(dns.content_category[*] in {68 83 151})",
+        "identity": "",
+        "device_posture": "",
+        "version": 1,
+        "rule_settings": {
+          "block_page_enabled": true,
+          "block_reason": "Malware domain blocked"
+        },
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "52bd425e-5284-48b0-941b-7affcea1f9b9",
+        "name": "DNS: Productivity - Allow Block Page Domains (DNS)",
+        "description": "Allow DNS resolution for custom block page domains",
+        "precedence": 751,
+        "enabled": true,
+        "action": "allow",
+        "filters": [
+          "dns"
+        ],
+        "created_at": "2025-08-19T21:25:57Z",
+        "updated_at": "2025-08-23T06:55:42Z",
+        "deleted_at": null,
+        "traffic": "dns.fqdn in {\"cloudflare-dynamic-block-page.bruteforce.workers.dev\" \"block.bozza.au\"}",
+        "identity": "",
+        "device_posture": "",
+        "version": 4,
+        "rule_settings": {},
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "6ee8bede-5dcb-46b1-8cc6-06098e22631c",
+        "name": "HTTP: Monitor Social Media Access",
+        "description": "Monitor access to social media sites",
+        "precedence": 800,
+        "enabled": true,
+        "action": "allow",
+        "filters": [
+          "http"
+        ],
+        "created_at": "2025-09-06T08:44:04Z",
+        "updated_at": "2025-09-06T08:44:04Z",
+        "deleted_at": null,
+        "traffic": "http.request.host in {\"facebook.com\" \"twitter.com\" \"instagram.com\" \"tiktok.com\" \"linkedin.com\" \"snapchat.com\"}",
+        "identity": "",
+        "device_posture": "",
+        "version": 1,
+        "rule_settings": {},
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "f1396d2b-7baa-45f3-9d12-f4c483482f89",
+        "name": "HTTP: Monitor File Upload Activity (Fixed)",
+        "description": "Monitor file upload activity for security using regex matching",
+        "precedence": 801,
+        "enabled": true,
+        "action": "allow",
+        "filters": [
+          "http"
+        ],
+        "created_at": "2025-09-06T08:45:06Z",
+        "updated_at": "2025-09-06T08:45:06Z",
+        "deleted_at": null,
+        "traffic": "http.request.method == \"POST\" and http.request.uri.path matches \".*upload.*\"",
+        "identity": "",
+        "device_posture": "",
+        "version": 1,
+        "rule_settings": {},
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "67d0224e-ef48-47a3-9dab-e12ac6f49efe",
+        "name": "HTTP: Custom - Security: Block Suspicious File Downloads",
+        "description": "Block downloads of potentially dangerous file types",
+        "precedence": 1000,
+        "enabled": true,
+        "action": "block",
+        "filters": [
+          "http"
+        ],
+        "created_at": "2025-08-15T05:49:48Z",
+        "updated_at": "2025-08-19T18:05:37Z",
+        "deleted_at": null,
+        "traffic": "http.request.uri.path matches \".*\\.(exe|scr|bat|cmd|pif|com|vbs|msi)$\" and not(http.request.host in {\"radar.cloudflare.com\" \"cloud.google.com\" \"apis.google.com\" \"gcs-us-00003.content-storage-download.googleapis.com\"})",
+        "identity": "",
+        "device_posture": "",
+        "version": 6,
+        "rule_settings": {},
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "537a9331-b81a-4038-a3db-4f4d169f4350",
+        "name": "DNS: Block Adult Content",
+        "description": "Block adult content domains",
+        "precedence": 1001,
+        "enabled": false,
+        "action": "block",
+        "filters": [
+          "dns"
+        ],
+        "created_at": "2025-09-06T08:20:16Z",
+        "updated_at": "2025-09-06T08:20:16Z",
+        "deleted_at": null,
+        "traffic": "any(dns.content_category[*] in {4})",
+        "identity": "",
+        "device_posture": "",
+        "version": 1,
+        "rule_settings": {
+          "block_page_enabled": true,
+          "block_reason": "Blocked: Adult content"
+        },
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "64f7a317-ed01-4e95-9eb0-bc6091612e11",
+        "name": "DNS: Block Gambling (Optional)",
+        "description": "Block gambling websites",
+        "precedence": 1002,
+        "enabled": false,
+        "action": "block",
+        "filters": [
+          "dns"
+        ],
+        "created_at": "2025-09-06T08:21:37Z",
+        "updated_at": "2025-09-06T08:21:37Z",
+        "deleted_at": null,
+        "traffic": "any(dns.content_category[*] in {23})",
+        "identity": "",
+        "device_posture": "",
+        "version": 1,
+        "rule_settings": {
+          "block_page_enabled": true,
+          "block_reason": "Blocked: Gambling site"
+        },
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "04f1cb23-8053-4305-ae12-7d2b5991599d",
+        "name": "DNS: Custom - Security: Compromised Domain",
+        "description": "",
+        "precedence": 1502,
+        "enabled": true,
+        "action": "block",
+        "filters": [
+          "dns"
+        ],
+        "created_at": "2025-08-22T05:07:42Z",
+        "updated_at": "2025-08-22T05:07:58Z",
+        "deleted_at": null,
+        "traffic": "any(dns.security_category[*] in {187})",
+        "identity": "",
+        "device_posture": "",
+        "version": 1,
+        "rule_settings": {
+          "notification_settings": {
+            "enabled": true
+          }
+        },
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "89088143-113e-4f5b-b391-04a72e895fa5",
+        "name": "DNS: Custom - Security: Block Malware",
+        "description": "Security blocking rule that prevents access to potentially harmful or unauthorized content.",
+        "precedence": 2000,
+        "enabled": true,
+        "action": "block",
+        "filters": [
+          "dns"
+        ],
+        "created_at": "2025-08-14T09:46:35Z",
+        "updated_at": "2025-08-22T05:06:14Z",
+        "deleted_at": null,
+        "traffic": "any(dns.security_category[*] in {117})",
+        "identity": "",
+        "device_posture": "",
+        "version": 8,
+        "rule_settings": {
+          "notification_settings": {
+            "enabled": true
+          }
+        },
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "172795d7-8ae9-4a2e-b78c-d0351e90b8aa",
+        "name": "TLS Policy - Block Expired Certificate Sites",
+        "description": "Block access to sites known to have expired SSL certificates for testing",
+        "precedence": 2001,
+        "enabled": true,
+        "action": "block",
+        "filters": [
+          "http"
+        ],
+        "created_at": "2025-09-06T07:54:07Z",
+        "updated_at": "2025-09-06T07:54:07Z",
+        "deleted_at": null,
+        "traffic": "http.request.host == \"expired.badssl.com\"",
+        "identity": "",
+        "device_posture": "",
+        "version": 1,
+        "rule_settings": {
+          "block_reason": "Expired SSL certificate detected - blocked by TLS security policy"
+        },
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "e1dd7f20-8937-4e09-b52b-b1f29d96c125",
+        "name": "TLS Policy - Block Self-Signed Certificate Sites",
+        "description": "Block access to sites with self-signed SSL certificates for testing",
+        "precedence": 2002,
+        "enabled": true,
+        "action": "block",
+        "filters": [
+          "http"
+        ],
+        "created_at": "2025-09-06T07:54:38Z",
+        "updated_at": "2025-09-06T07:54:38Z",
+        "deleted_at": null,
+        "traffic": "http.request.host == \"self-signed.badssl.com\"",
+        "identity": "",
+        "device_posture": "",
+        "version": 1,
+        "rule_settings": {
+          "block_reason": "Self-signed SSL certificate detected - blocked by TLS security policy"
+        },
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "2abd52a1-6f5c-4172-8831-720b0b654438",
+        "name": "TLS Policy - Block Revoked Certificate Sites",
+        "description": "Block access to sites with revoked SSL certificates for testing",
+        "precedence": 2003,
+        "enabled": true,
+        "action": "block",
+        "filters": [
+          "http"
+        ],
+        "created_at": "2025-09-06T07:54:38Z",
+        "updated_at": "2025-09-06T07:54:38Z",
+        "deleted_at": null,
+        "traffic": "http.request.host == \"revoked.badssl.com\"",
+        "identity": "",
+        "device_posture": "",
+        "version": 1,
+        "rule_settings": {
+          "block_reason": "Revoked SSL certificate detected - blocked by TLS security policy"
+        },
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "fc94708e-c874-4032-bda2-0bf8d643ff1a",
+        "name": "TLS Policy - Block Weak Encryption Sites",
+        "description": "Block access to sites using weak encryption (RC4, old TLS)",
+        "precedence": 2004,
+        "enabled": true,
+        "action": "block",
+        "filters": [
+          "http"
+        ],
+        "created_at": "2025-09-06T07:55:11Z",
+        "updated_at": "2025-09-06T07:55:11Z",
+        "deleted_at": null,
+        "traffic": "http.request.host in {\"rc4.badssl.com\" \"tls-v1-0.badssl.com\" \"tls-v1-1.badssl.com\"}",
+        "identity": "",
+        "device_posture": "",
+        "version": 1,
+        "rule_settings": {
+          "block_reason": "Weak encryption detected - blocked by TLS security policy"
+        },
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "bfc47f3f-bf8c-481c-b315-ff47767793a4",
+        "name": "TLS Policy - Block Invalid Hostname Sites",
+        "description": "Block access to sites with SSL certificate hostname mismatches",
+        "precedence": 2005,
+        "enabled": true,
+        "action": "block",
+        "filters": [
+          "http"
+        ],
+        "created_at": "2025-09-06T07:55:12Z",
+        "updated_at": "2025-09-06T07:55:12Z",
+        "deleted_at": null,
+        "traffic": "http.request.host in {\"wrong.host.badssl.com\" \"untrusted-root.badssl.com\"}",
+        "identity": "",
+        "device_posture": "",
+        "version": 1,
+        "rule_settings": {
+          "block_reason": "SSL certificate hostname mismatch detected - blocked by TLS security policy"
+        },
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "93db8913-b130-4d43-9419-717893951706",
+        "name": "TLS Policy - Monitor Certificate Test Sites",
+        "description": "Log access to certificate testing sites for monitoring",
+        "precedence": 2010,
+        "enabled": true,
+        "action": "allow",
+        "filters": [
+          "http"
+        ],
+        "created_at": "2025-09-06T07:57:36Z",
+        "updated_at": "2025-09-06T07:57:36Z",
+        "deleted_at": null,
+        "traffic": "http.request.host matches \".*\\.badssl\\.com$\"",
+        "identity": "",
+        "device_posture": "",
+        "version": 1,
+        "rule_settings": {
+          "payload_log": {
+            "enabled": true
+          },
+          "untrusted_cert": {
+            "action": "pass_through"
+          }
+        },
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "143ffd73-663c-47da-87b5-3443eae4638f",
+        "name": "Network: Allow HTTPS",
+        "description": "Explicitly allow HTTPS traffic",
+        "precedence": 2100,
+        "enabled": true,
+        "action": "allow",
+        "filters": [
+          "l4"
+        ],
+        "created_at": "2025-09-06T08:22:39Z",
+        "updated_at": "2025-09-06T08:22:39Z",
+        "deleted_at": null,
+        "traffic": "net.dst.port == 443",
+        "identity": "",
+        "device_posture": "",
+        "version": 1,
+        "rule_settings": {},
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "0f4f70e4-0340-4bc2-afdb-7975b1c91f95",
+        "name": "HTTP: Custom - Network Security: Block Dangerous File Downloads",
+        "description": "Block downloads of executable files and scripts",
+        "precedence": 3000,
+        "enabled": true,
+        "action": "block",
+        "filters": [
+          "http"
+        ],
+        "created_at": "2025-08-15T05:50:43Z",
+        "updated_at": "2025-08-19T18:05:39Z",
+        "deleted_at": null,
+        "traffic": "http.request.uri.path matches \".*\\.(exe|scr|bat|cmd|pif|com|vbs|msi|deb|rpm)$\"",
+        "identity": "",
+        "device_posture": "",
+        "version": 4,
+        "rule_settings": {
+          "block_reason": "Dangerous file type blocked"
+        },
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "407d74af-c5ce-444c-9207-df31b6d4d998",
+        "name": "HTTP: Block Social Media (Optional)",
+        "description": "Block major social media platforms",
+        "precedence": 3001,
+        "enabled": false,
+        "action": "block",
+        "filters": [
+          "http"
+        ],
+        "created_at": "2025-09-06T08:23:10Z",
+        "updated_at": "2025-09-06T08:23:10Z",
+        "deleted_at": null,
+        "traffic": "http.request.host == \"facebook.com\"",
+        "identity": "",
+        "device_posture": "",
+        "version": 1,
+        "rule_settings": {
+          "block_reason": "Blocked: Social media restricted"
+        },
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "33656020-e1ec-4f05-91ed-2c030ac76cc6",
+        "name": "DNS: Bootstrap Security Categories",
+        "description": "Bootstrap: Block domains in security threat categories",
+        "precedence": 3002,
+        "enabled": true,
+        "action": "block",
+        "filters": [
+          "dns"
+        ],
+        "created_at": "2025-09-06T09:19:06Z",
+        "updated_at": "2025-09-06T09:19:06Z",
+        "deleted_at": null,
+        "traffic": "any(dns.security_category[*] in {68 178 80 187 83 176 175 117 131 188 134 191 151 153})",
+        "identity": "",
+        "device_posture": "",
+        "version": 1,
+        "rule_settings": {
+          "block_page_enabled": true,
+          "block_reason": "Security threat category blocked"
+        },
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "2d84312b-b601-4352-89fe-5eebdc961fec",
+        "name": "HTTP: Allow Business Tools",
+        "description": "Ensure business tools are accessible",
+        "precedence": 3100,
+        "enabled": true,
+        "action": "allow",
+        "filters": [
+          "http"
+        ],
+        "created_at": "2025-09-06T08:23:40Z",
+        "updated_at": "2025-09-06T08:23:40Z",
+        "deleted_at": null,
+        "traffic": "http.request.host == \"office.com\"",
+        "identity": "",
+        "device_posture": "",
+        "version": 1,
+        "rule_settings": {},
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "a52521e9-d130-490d-9745-592c52e7e91e",
+        "name": "HTTP: Bootstrap Security Categories",
+        "description": "Bootstrap: Block HTTP requests to security threat domains",
+        "precedence": 3101,
+        "enabled": true,
+        "action": "block",
+        "filters": [
+          "http"
+        ],
+        "created_at": "2025-09-06T09:19:08Z",
+        "updated_at": "2025-09-06T09:19:08Z",
+        "deleted_at": null,
+        "traffic": "any(http.request.uri.security_category[*] in {68 178 80 187 83 176 175 117 131 188 134 191 151 153})",
+        "identity": "",
+        "device_posture": "",
+        "version": 1,
+        "rule_settings": {
+          "block_reason": "Security threat category blocked"
+        },
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "5d07e914-b001-4da8-8d0c-866ae6c6c267",
+        "name": "HTTP: Bootstrap File Download Security",
+        "description": "Bootstrap: Block dangerous executable downloads",
+        "precedence": 3150,
+        "enabled": true,
+        "action": "block",
+        "filters": [
+          "http"
+        ],
+        "created_at": "2025-09-06T09:19:08Z",
+        "updated_at": "2025-09-06T09:19:08Z",
+        "deleted_at": null,
+        "traffic": "http.request.uri.path matches \".*\\\\.(exe|msi|dll|bat|cmd|scr|ps1|jar|apk|ipa)$\"",
+        "identity": "",
+        "device_posture": "",
+        "version": 1,
+        "rule_settings": {
+          "block_reason": "Dangerous file download blocked"
+        },
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "d916175f-2a52-40b0-a07c-3b41930c4674",
+        "name": "L4: Bootstrap Block High-Risk Countries",
+        "description": "Bootstrap: Block traffic to high-risk countries",
+        "precedence": 3200,
+        "enabled": true,
+        "action": "block",
+        "filters": [
+          "l4"
+        ],
+        "created_at": "2025-09-06T09:19:10Z",
+        "updated_at": "2025-09-06T09:19:10Z",
+        "deleted_at": null,
+        "traffic": "net.dst.geo.country == \"RU\" or net.dst.geo.country == \"KP\" or net.dst.geo.country == \"IR\" or net.dst.geo.country == \"SY\"",
+        "identity": "",
+        "device_posture": "",
+        "version": 1,
+        "rule_settings": {},
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "8b501856-4852-4011-a2aa-f536a00144bf",
+        "name": "L4: Productivity (Allow) - Infrastructure: SSH Access Monitoring",
+        "description": "Allows specified traffic to ensure required services and applications function properly.",
+        "precedence": 3250,
+        "enabled": true,
+        "action": "allow",
+        "filters": [
+          "l4"
+        ],
+        "created_at": "2025-08-14T09:48:26Z",
+        "updated_at": "2025-08-22T05:10:52Z",
+        "deleted_at": null,
+        "traffic": "net.dst.port == 22",
+        "identity": "",
+        "device_posture": "",
+        "version": 9,
+        "rule_settings": {},
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "2a384b69-0fa5-4cad-b5c8-37b9dff0e812",
+        "name": "L4: Bootstrap Block Suspicious Ports",
+        "description": "Bootstrap: Block commonly abused ports",
+        "precedence": 3251,
+        "enabled": true,
+        "action": "block",
+        "filters": [
+          "l4"
+        ],
+        "created_at": "2025-09-06T09:19:17Z",
+        "updated_at": "2025-09-06T09:19:17Z",
+        "deleted_at": null,
+        "traffic": "net.dst.port in {1433 3389 5432 1521 3306 5900 6379 27017 9200 11211}",
+        "identity": "",
+        "device_posture": "",
+        "version": 1,
+        "rule_settings": {},
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "64fe8f32-cf65-4d8a-85a4-3f4940d453ba",
+        "name": "HTTP: Custom - Network Security: Block SQL Injection Attempts",
+        "description": "Block common SQL injection patterns",
+        "precedence": 4000,
+        "enabled": true,
+        "action": "block",
+        "filters": [
+          "http"
+        ],
+        "created_at": "2025-08-15T05:50:44Z",
+        "updated_at": "2025-08-19T18:05:40Z",
+        "deleted_at": null,
+        "traffic": "http.request.uri.query matches \".*(SELECT|UNION|INSERT|UPDATE|DELETE).*\"",
+        "identity": "",
+        "device_posture": "",
+        "version": 4,
+        "rule_settings": {
+          "block_reason": "SQL injection attempt blocked"
+        },
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "4fd7fa8d-8931-42cc-bdac-c7ac5018c685",
+        "name": "NETWORK: Block Security Risks",
+        "description": "",
+        "precedence": 4876,
+        "enabled": true,
+        "action": "block",
+        "filters": [
+          "l4"
+        ],
+        "created_at": "2025-08-22T05:10:45Z",
+        "updated_at": "2025-08-22T05:12:12Z",
+        "deleted_at": null,
+        "traffic": "any(net.fqdn.security_category[*] in {68 178 80 187 83 176 175 117 131 188 134 191 151 153})",
+        "identity": "",
+        "device_posture": "",
+        "version": 2,
+        "rule_settings": {
+          "notification_settings": {
+            "enabled": true
+          }
+        },
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "e9ddfb0c-a16c-429c-ac64-ae6a4e56a635",
+        "name": "HTTP: Custom - Network Security: Block XSS Attempts",
+        "description": "Block cross-site scripting attempts",
+        "precedence": 5000,
+        "enabled": true,
+        "action": "block",
+        "filters": [
+          "http"
+        ],
+        "created_at": "2025-08-15T05:50:45Z",
+        "updated_at": "2025-08-19T18:05:41Z",
+        "deleted_at": null,
+        "traffic": "http.request.uri matches \".*(<script|javascript:|onload=|onerror=).*\"",
+        "identity": "",
+        "device_posture": "",
+        "version": 4,
+        "rule_settings": {
+          "block_reason": "XSS attempt blocked"
+        },
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "ddab6d91-54e4-485b-9e6f-a6f237d2b8ca",
+        "name": "HTTP: Custom - Network Security: Block Admin Path Brute Force",
+        "description": "Block suspicious admin path access attempts",
+        "precedence": 6000,
+        "enabled": true,
+        "action": "block",
+        "filters": [
+          "http"
+        ],
+        "created_at": "2025-08-15T05:50:46Z",
+        "updated_at": "2025-08-19T18:05:42Z",
+        "deleted_at": null,
+        "traffic": "http.request.uri.path matches \".*(wp-admin|phpmyadmin|cpanel|admin|administrator).*\" and http.request.method == \"POST\"",
+        "identity": "",
+        "device_posture": "",
+        "version": 4,
+        "rule_settings": {
+          "block_reason": "Admin access attempt blocked"
+        },
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "fd4a56fc-7778-4617-b2c4-10243af26999",
+        "name": "Block Crap",
+        "description": "",
+        "precedence": 6500,
+        "enabled": true,
+        "action": "block",
+        "filters": [
+          "l4"
+        ],
+        "created_at": "2025-08-21T09:24:31Z",
+        "updated_at": "2025-08-21T09:31:07Z",
+        "deleted_at": null,
+        "traffic": "net.dst.ip in $63bfc994-e056-4e12-9f37-79d2f0e62e57 or net.src.ip in $63bfc994-e056-4e12-9f37-79d2f0e62e57 or net.sni.host in $0f0e678c-e907-4f7b-a939-b30e25ed17a6",
+        "identity": "",
+        "device_posture": "",
+        "version": 3,
+        "rule_settings": {
+          "notification_settings": {
+            "enabled": true
+          }
+        },
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "7d8fedc9-adfa-4a83-bae2-f96f089da5dc",
+        "name": "DNS: Custom - Security: Block Botnets",
+        "description": "Security blocking rule that prevents access to potentially harmful or unauthorized content.",
+        "precedence": 7000,
+        "enabled": true,
+        "action": "block",
+        "filters": [
+          "dns"
+        ],
+        "created_at": "2025-08-14T09:47:40Z",
+        "updated_at": "2025-08-22T05:06:03Z",
+        "deleted_at": null,
+        "traffic": "any(dns.security_category[*] in {80})",
+        "identity": "",
+        "device_posture": "",
+        "version": 8,
+        "rule_settings": {
+          "notification_settings": {
+            "enabled": true
+          }
+        },
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "245965ce-e2e1-4ec4-943d-6d1d5e61fc65",
+        "name": "DNS: Custom - Security: Block Phishing",
+        "description": "Security blocking rule that prevents access to potentially harmful or unauthorized content.",
+        "precedence": 8000,
+        "enabled": true,
+        "action": "block",
+        "filters": [
+          "dns"
+        ],
+        "created_at": "2025-08-14T09:46:57Z",
+        "updated_at": "2025-08-22T05:05:50Z",
+        "deleted_at": null,
+        "traffic": "any(dns.security_category[*] in {131})",
+        "identity": "",
+        "device_posture": "",
+        "version": 7,
+        "rule_settings": {
+          "notification_settings": {
+            "enabled": true
+          }
+        },
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "d21d165d-b778-40a2-89cd-c808ebb4429d",
+        "name": "HTTP: Custom - App Control: Block Suspicious Downloads",
+        "description": "Block downloads from suspicious paths",
+        "precedence": 9000,
+        "enabled": true,
+        "action": "block",
+        "filters": [
+          "http"
+        ],
+        "created_at": "2025-08-15T05:50:48Z",
+        "updated_at": "2025-08-19T18:05:53Z",
+        "deleted_at": null,
+        "traffic": "http.request.uri.path matches \".*(tmp|temp|cache).*\\.(zip|rar|7z|tar)$\"",
+        "identity": "",
+        "device_posture": "",
+        "version": 4,
+        "rule_settings": {
+          "block_reason": "Suspicious download blocked"
+        },
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "4faa4e9d-b33c-4ad4-b7ce-3cf5ece005e2",
+        "name": "DNS: Custom - Security: Block Spam",
+        "description": "",
+        "precedence": 9001,
+        "enabled": true,
+        "action": "block",
+        "filters": [
+          "dns"
+        ],
+        "created_at": "2025-08-22T05:06:54Z",
+        "updated_at": "2025-08-22T05:08:14Z",
+        "deleted_at": null,
+        "traffic": "any(dns.security_category[*] in {151})",
+        "identity": "",
+        "device_posture": "",
+        "version": 2,
+        "rule_settings": {
+          "notification_settings": {
+            "enabled": true
+          }
+        },
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "5cecf0a7-970d-42a3-b11e-38456c225705",
+        "name": "DNS: Custom - Security: Block Command & Control",
+        "description": "Security blocking rule that prevents access to potentially harmful or unauthorized content.",
+        "precedence": 10000,
+        "enabled": true,
+        "action": "block",
+        "filters": [
+          "dns"
+        ],
+        "created_at": "2025-08-14T09:47:17Z",
+        "updated_at": "2025-08-19T18:05:55Z",
+        "deleted_at": null,
+        "traffic": "any(dns.security_category[*] in {68})",
+        "identity": "",
+        "device_posture": "",
+        "version": 6,
+        "rule_settings": {},
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "865b40d1-54c6-4301-a0ba-88722638fa00",
+        "name": "DNS: Block All Security Risks",
+        "description": "",
+        "precedence": 10752,
+        "enabled": true,
+        "action": "block",
+        "filters": [
+          "dns"
+        ],
+        "created_at": "2025-08-22T05:04:20Z",
+        "updated_at": "2025-08-22T05:09:57Z",
+        "deleted_at": null,
+        "traffic": "any(dns.security_category[*] in {68 178 83 176 175 188 134 191 153})",
+        "identity": "",
+        "device_posture": "",
+        "version": 3,
+        "rule_settings": {
+          "notification_settings": {
+            "enabled": true
+          }
+        },
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "b2f80827-8306-460c-8cd2-46969fd33cb4",
+        "name": "HTTP: Custom - Risk-Based: Block Common Attack Patterns",
+        "description": "Block common web attack patterns in URLs",
+        "precedence": 11000,
+        "enabled": true,
+        "action": "block",
+        "filters": [
+          "http"
+        ],
+        "created_at": "2025-08-15T05:49:51Z",
+        "updated_at": "2025-08-19T18:05:56Z",
+        "deleted_at": null,
+        "traffic": "http.request.uri.path matches \".*(SELECT|UNION|DROP|INSERT|UPDATE|DELETE|script>|javascript:).*\"",
+        "identity": "",
+        "device_posture": "",
+        "version": 4,
+        "rule_settings": {
+          "block_reason": "Potential attack pattern detected"
+        },
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "c569aa22-085e-4b24-bafb-5a1c57ece8dd",
+        "name": "L4: Custom - Security: Block High-Risk Countries",
+        "description": "Blocks traffic from high-risk geographic regions to reduce security threats and comply with access policies.",
+        "precedence": 13000,
+        "enabled": true,
+        "action": "block",
+        "filters": [
+          "l4"
+        ],
+        "created_at": "2025-08-14T09:48:02Z",
+        "updated_at": "2025-08-19T18:05:57Z",
+        "deleted_at": null,
+        "traffic": "net.src.geo.country in {\"CN\" \"RU\" \"KP\" \"IR\" \"BY\" \"MM\" \"SY\" \"AF\"}",
+        "identity": "",
+        "device_posture": "",
+        "version": 6,
+        "rule_settings": {},
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "6af6bb08-2288-4346-adec-4f081e5e2d5b",
+        "name": "HTTP: Block Security Risks",
+        "description": "",
+        "precedence": 13002,
+        "enabled": true,
+        "action": "block",
+        "filters": [
+          "http"
+        ],
+        "created_at": "2025-08-22T05:11:53Z",
+        "updated_at": "2025-08-23T06:12:34Z",
+        "deleted_at": null,
+        "traffic": "any(http.request.uri.security_category[*] in {68 178 80 187 83 176 175 117 131 188 134 191 151 153})",
+        "identity": "",
+        "device_posture": "",
+        "version": 1,
+        "rule_settings": {
+          "notification_settings": {
+            "enabled": true
+          }
+        },
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "eabdfcbe-d4d6-4327-820e-deb2849dada4",
+        "name": "DNS: Productivity - Social: Allow Grindr (DNS)",
+        "description": "Allow DNS resolution for Grindr app and services\n\n[BACKUP 2025-08-17T02:57:11.209Z] Original traffic filter:\ndns.fqdn in {\"grindr.com\" \"www.grindr.com\" \"api.grindr.com\" \"app.grindr.com\" \"chat.grindr.com\" \"media.grindr.com\" \"images.grindr.com\" \"cdn.grindr.com\" \"push.grindr.com\" \"analytics.grindr.com\" \"static.grindr.com\" \"assets.grindr.com\"}\n\nOptimized using list: Social Media Sites (0df15f7f-dc35-46cb-8ac6-8a827bdbf559)\nDomains replaced: grindr.com, www.grindr.com, api.grindr.com, app.grindr.com, chat.grindr.com, media.grindr.com, images.grindr.com, cdn.grindr.com, push.grindr.com, analytics.grindr.com, static.grindr.com, assets.grindr.com",
+        "precedence": 26000,
+        "enabled": true,
+        "action": "allow",
+        "filters": [
+          "dns"
+        ],
+        "created_at": "2025-08-15T05:07:15Z",
+        "updated_at": "2025-08-27T23:03:05Z",
+        "deleted_at": null,
+        "traffic": "dns.fqdn in $0df15f7f-dc35-46cb-8ac6-8a827bdbf559",
+        "identity": "",
+        "device_posture": "",
+        "version": 7,
+        "rule_settings": {},
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "1dd393bf-33df-44dc-8ed0-9ec59a70edbd",
+        "name": "DNS: Productivity - Allow a.simplemdm.com",
+        "description": "Auto-created rule to allow access to specified domains with security validation",
+        "precedence": 31000,
+        "enabled": true,
+        "action": "allow",
+        "filters": [
+          "dns"
+        ],
+        "created_at": "2025-08-17T11:38:11Z",
+        "updated_at": "2025-08-27T23:03:14Z",
+        "deleted_at": null,
+        "traffic": "dns.fqdn == \"a.simplemdm.com\"",
+        "identity": "",
+        "device_posture": "",
+        "version": 6,
+        "rule_settings": {},
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "ce7cae26-17fd-42a4-8b24-96046102a894",
+        "name": "DNS: Productivity (Allow) - Certificate: OCSP and CRL Infrastructure (DNS)",
+        "description": "Critical: Allow DNS resolution for OCSP responders and CRL servers. Required for certificate revocation checking and browser security.",
+        "precedence": 33000,
+        "enabled": true,
+        "action": "allow",
+        "filters": [
+          "dns"
+        ],
+        "created_at": "2025-08-17T12:59:09Z",
+        "updated_at": "2025-08-27T23:03:19Z",
+        "deleted_at": null,
+        "traffic": "dns.fqdn == \"ocsp.digicert.com\" or dns.fqdn == \"ocsp.sectigo.com\" or dns.fqdn == \"ocsp.comodoca.com\" or dns.fqdn == \"ocsp.globalsign.com\" or dns.fqdn == \"ocsp.entrust.net\" or dns.fqdn == \"ocsp.apple.com\" or dns.fqdn == \"ocsp.godaddy.com\" or dns.fqdn == \"ocsp.thawte.com\" or dns.fqdn == \"ocsp.verisign.com\" or dns.fqdn == \"ocsp.symantec.com\" or dns.fqdn == \"ocsp2.globalsign.com\" or dns.fqdn == \"ocsp.identrust.com\" or dns.fqdn == \"ocsp.usertrust.com\" or dns.fqdn == \"ocsp.trust-provider.com\" or dns.fqdn == \"ocsp.letsencrypt.org\" or dns.fqdn == \"r3.o.lencr.org\" or dns.fqdn == \"r4.o.lencr.org\" or dns.fqdn == \"e1.o.lencr.org\" or dns.fqdn == \"e2.o.lencr.org\" or dns.fqdn == \"x1.o.lencr.org\" or dns.fqdn == \"x2.o.lencr.org\" or dns.fqdn == \"crl.digicert.com\" or dns.fqdn == \"crl.sectigo.com\" or dns.fqdn == \"crl.comodoca.com\" or dns.fqdn == \"crl.globalsign.com\" or dns.fqdn == \"crl.entrust.net\" or dns.fqdn == \"crl.apple.com\" or dns.fqdn == \"crl.godaddy.com\" or dns.fqdn == \"crl.thawte.com\" or dns.fqdn == \"crl.verisign.com\" or dns.fqdn == \"crl.symantec.com\" or dns.fqdn == \"crl3.digicert.com\" or dns.fqdn == \"crl4.digicert.com\" or dns.fqdn == \"crl.identrust.com\" or dns.fqdn == \"crl.usertrust.com\" or dns.fqdn == \"crl.letsencrypt.org\" or dns.fqdn == \"cacerts.digicert.com\" or dns.fqdn == \"secure.globalsign.com\" or dns.fqdn == \"apps.identrust.com\" or dns.fqdn == \"letsencrypt.org\" or dns.fqdn == \"isrg.trustid.ocsp.identrust.com\" or dns.fqdn == \"ocsp.int-x3.letsencrypt.org\" or dns.fqdn == \"ocsp.msocsp.com\" or dns.fqdn == \"crl.microsoft.com\" or dns.fqdn == \"mscrl.microsoft.com\" or dns.fqdn == \"ocsp.rootca.microsoft.com\" or dns.fqdn == \"ocsp.apple.com\" or dns.fqdn == \"ocsp2.apple.com\" or dns.fqdn == \"crl.apple.com\" or dns.fqdn == \"ocsp-lb.apple.com.akadns.net\" or dns.fqdn == \"crl-lb.apple.com.akadns.net\" or dns.fqdn == \"ocsp.pki.goog\" or dns.fqdn == \"crl.pki.goog\" or dns.fqdn == \"pki.goog\" or dns.fqdn == \"status.rapidssl.com\" or dns.fqdn == \"ocsp.rapidssl.com\" or dns.fqdn == \"crl.rapidssl.com\" or dns.fqdn == \"ocsp.ssl.com\" or dns.fqdn == \"crl.ssl.com\"",
+        "identity": "",
+        "device_posture": "",
+        "version": 6,
+        "rule_settings": {},
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "a60a0af0-0dee-4435-9b55-110b2808e525",
+        "name": "DNS: Productivity (Allow) - Certificate: SSL/TLS Validation Services",
+        "description": "Allow access to certificate transparency logs, OCSP responders, and CRL endpoints for SSL/TLS validation.",
+        "precedence": 35000,
+        "enabled": true,
+        "action": "allow",
+        "filters": [
+          "dns"
+        ],
+        "created_at": "2025-08-17T12:44:53Z",
+        "updated_at": "2025-08-27T23:03:22Z",
+        "deleted_at": null,
+        "traffic": "dns.fqdn == \"crt.sh\" or dns.fqdn == \"ct.googleapis.com\" or dns.fqdn == \"ct.cloudflare.com\" or dns.fqdn == \"ocsp.digicert.com\" or dns.fqdn == \"ocsp.letsencrypt.org\" or dns.fqdn == \"crl.digicert.com\" or dns.fqdn == \"crl.letsencrypt.org\" or dns.fqdn == \"r3.o.lencr.org\" or dns.fqdn == \"r4.o.lencr.org\"",
+        "identity": "",
+        "device_posture": "",
+        "version": 6,
+        "rule_settings": {},
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "c7be3bcd-0f64-4708-bca1-754d29632b04",
+        "name": "DNS: Productivity - Allow NPM Registry",
+        "description": "Allow access to NPM registry and related services",
+        "precedence": 44000,
+        "enabled": true,
+        "action": "allow",
+        "filters": [
+          "dns"
+        ],
+        "created_at": "2025-08-17T22:44:52Z",
+        "updated_at": "2025-08-27T23:03:37Z",
+        "deleted_at": null,
+        "traffic": "dns.fqdn in {\"registry.npmjs.org\" \"registry.yarnpkg.com\" \"npmjs.com\" \"yarnpkg.com\"}",
+        "identity": "",
+        "device_posture": "",
+        "version": 6,
+        "rule_settings": {},
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "72edaf60-19db-4d4c-8ed8-0fd3aba3e1d3",
+        "name": "DNS: Productivity - Allow GitHub",
+        "description": "Allow access to GitHub services",
+        "precedence": 45000,
+        "enabled": true,
+        "action": "allow",
+        "filters": [
+          "dns"
+        ],
+        "created_at": "2025-08-17T22:44:52Z",
+        "updated_at": "2025-08-27T23:03:46Z",
+        "deleted_at": null,
+        "traffic": "dns.fqdn in {\"github.com\" \"api.github.com\" \"raw.githubusercontent.com\" \"objects.githubusercontent.com\"}",
+        "identity": "",
+        "device_posture": "",
+        "version": 6,
+        "rule_settings": {},
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "a0146089-9d1a-423a-9eb4-8b94784aea1d",
+        "name": "DNS: Productivity - Allow OpenAI API",
+        "description": "Allow access to OpenAI API endpoints",
+        "precedence": 46000,
+        "enabled": true,
+        "action": "allow",
+        "filters": [
+          "dns"
+        ],
+        "created_at": "2025-08-17T22:44:53Z",
+        "updated_at": "2025-08-27T23:03:30Z",
+        "deleted_at": null,
+        "traffic": "dns.fqdn in {\"api.openai.com\" \"openai.com\"}",
+        "identity": "",
+        "device_posture": "",
+        "version": 6,
+        "rule_settings": {},
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "c73e7a7a-6bab-4d69-87aa-062b0b23e428",
+        "name": "DNS: Productivity - Allow Cloudflare API",
+        "description": "Allow access to Cloudflare API and Worker services",
+        "precedence": 47000,
+        "enabled": true,
+        "action": "allow",
+        "filters": [
+          "dns"
+        ],
+        "created_at": "2025-08-17T22:44:54Z",
+        "updated_at": "2025-08-27T23:03:31Z",
+        "deleted_at": null,
+        "traffic": "dns.fqdn in {\"api.cloudflare.com\" \"workers.dev\" \"*.workers.dev\" \"*.cloudflareclient.com\"}",
+        "identity": "",
+        "device_posture": "",
+        "version": 6,
+        "rule_settings": {},
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "30867815-418f-413d-89f9-3a1572a90b0d",
+        "name": "DNS: Productivity - Allow Apple Homekit and Google Home Ecosystems",
+        "description": "Allow Apple Homekit and Google Home Ecosystems\n\n[BACKUP 2025-08-17T03:17:08.969Z] Original traffic filter:\ndns.fqdn in {\"apple-cloudkit.com\" \"apple-livephotoskit.com\" \"icloud.com\" \"apple.com\" \"googleapis.com\" \"nest.com\" \"google-home.com\" \"gstatic.com\" \"home.nest.com\" \"xmpp-qa.google.com\"} or dns.fqdn matches \"^.*\\.local\\.home$\"\n\nOptimized using list: Business Applications (419dd8d5-b0a0-4892-ab87-9c663735727a)\nDomains replaced: googleapis.com, gstatic.com, xmpp-qa.google.com\n\n[BACKUP 2025-08-17T03:19:32.128Z] Original traffic filter:\n(dns.fqdn in $419dd8d5-b0a0-4892-ab87-9c663735727a or dns.fqdn in {\"apple-cloudkit.com\" \"apple-livephotoskit.com\" \"icloud.com\" \"apple.com\" \"nest.com\" \"google-home.com\" \"home.nest.com\"}) or dns.fqdn matches \"^.*\\.local\\.home$\"\n\nOptimized using list: Critical Infrastructure Domains (fa64ba26-c470-4273-b251-c75ce17280b6)\nDomains replaced: icloud.com, apple.com [FIXED: Removed problematic regex anchor]",
+        "precedence": 56000,
+        "enabled": true,
+        "action": "allow",
+        "filters": [
+          "dns"
+        ],
+        "created_at": "2025-08-15T04:05:08Z",
+        "updated_at": "2025-08-27T23:03:41Z",
+        "deleted_at": null,
+        "traffic": "dns.fqdn in $419dd8d5-b0a0-4892-ab87-9c663735727a or (dns.fqdn in $fa64ba26-c470-4273-b251-c75ce17280b6 or dns.fqdn in {\"apple-cloudkit.com\" \"apple-livephotoskit.com\" \"nest.com\" \"google-home.com\" \"home.nest.com\"}) or dns.fqdn matches \".*\\.local\\.home\"",
+        "identity": "",
+        "device_posture": "",
+        "version": 12,
+        "rule_settings": {},
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      },
+      {
+        "id": "28e7ac78-84b9-4e77-b75d-3343461c3f65",
+        "name": "Microsoft 365 Auto Generated",
+        "description": "Bypass HTTPS decryption of Microsoft 365 traffic",
+        "precedence": 126000,
+        "enabled": true,
+        "action": "off",
+        "filters": [
+          "http"
+        ],
+        "created_at": "2025-08-21T01:17:16Z",
+        "updated_at": "2025-08-27T22:45:22Z",
+        "deleted_at": null,
+        "traffic": "any(app.ids[*] in {626 594 635 514 601 596 597 680})",
+        "identity": "",
+        "device_posture": "",
+        "version": 1,
+        "rule_settings": {
+          "biso_admin_controls": {}
+        },
+        "source_account": "0b0ee2b5eaf1fb8a2612e40ab6488052"
+      }
+    ],
+    "success": true,
+    "errors": [],
+    "messages": []
+  }
+}

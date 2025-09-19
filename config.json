@@ -1,0 +1,67 @@
+{
+  "cloudflare": {
+    "api_email": "daniel@bruteforce.group",
+    "api_key": "9586ac5f9e8deaeffa283a83d137d265123fe",
+    "account_id": "0b0ee2b5eaf1fb8a2612e40ab6488052",
+    "zone_id": "7249ad638510c628a7861d93535acbca"
+  },
+  "monitoring": {
+    "interval_minutes": 5,
+    "lookback_minutes": 15,
+    "min_events_for_analysis": 3,
+    "gateway_ip": "104.28.250.151"
+  },
+  "analysis": {
+    "blocked_threshold": 5,
+    "confidence_threshold": 0.6,
+    "legitimate_domains": [
+      "apple.com",
+      "google.com", 
+      "microsoft.com",
+      "amazon.com",
+      "cloudflare.com",
+      "github.com",
+      "stackoverflow.com"
+    ],
+    "suspicious_patterns": [
+      "select ",
+      "union ",
+      "drop ",
+      "insert ",
+      "update ",
+      "delete ",
+      "<script",
+      "javascript:",
+      "onerror=",
+      "onload="
+    ],
+    "executable_extensions": [".exe", ".scr", ".bat", ".cmd", ".msi", ".vbs"]
+  },
+  "notifications": {
+    "desktop": true,
+    "email": {
+      "enabled": false,
+      "smtp_server": "smtp.gmail.com",
+      "smtp_port": 587,
+      "from_address": "your-email@domain.com",
+      "to_address": "daniel@bruteforce.group",
+      "username": "your-email@domain.com",
+      "password": "your-app-password"
+    },
+    "webhook": {
+      "enabled": false,
+      "url": "https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK",
+      "format": "slack"
+    }
+  },
+  "database": {
+    "path": "gateway_monitor.db",
+    "retention_days": 30
+  },
+  "logging": {
+    "level": "INFO",
+    "file": "gateway_monitor.log",
+    "max_size_mb": 10,
+    "backup_count": 5
+  }
+}

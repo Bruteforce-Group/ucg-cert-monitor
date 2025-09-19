@@ -1,0 +1,1 @@
+{"timestamp": "2025-09-06T17:26:50.148455", "event_type": "tls_policy_violation", "host": "expired.badssl.com", "certificate_subject": "*.badssl.com", "certificate_issuer": "BadSSL Fake CA", "violation_type": "Expired Certificate", "policy_name": "Block Invalid SSL Certificates", "action": "block", "source_ip": "192.168.22.100"}

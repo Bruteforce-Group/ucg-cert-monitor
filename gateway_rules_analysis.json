@@ -1,0 +1,378 @@
+{
+  "name": "HTTP: Productivity - Allow Block Page Domains",
+  "action": "allow",
+  "enabled": true,
+  "filters": [
+    "http"
+  ],
+  "traffic": "http.request.host in {\"cloudflare-dynamic-block-page.bruteforce.workers.dev\" \"block.bozza.au\"}"
+}
+{
+  "name": "DNS: Productivity - Allow Block Page Domains (DNS)",
+  "action": "allow",
+  "enabled": true,
+  "filters": [
+    "dns"
+  ],
+  "traffic": "dns.fqdn in {\"cloudflare-dynamic-block-page.bruteforce.workers.dev\" \"block.bozza.au\"}"
+}
+{
+  "name": "HTTP: Custom - Security: Block Suspicious File Downloads",
+  "action": "block",
+  "enabled": true,
+  "filters": [
+    "http"
+  ],
+  "traffic": "http.request.uri.path matches \".*\\.(exe|scr|bat|cmd|pif|com|vbs|msi)$\" and not(http.request.host in {\"radar.cloudflare.com\" \"cloud.google.com\" \"apis.google.com\" \"gcs-us-00003.content-storage-download.googleapis.com\"})"
+}
+{
+  "name": "DNS: Block Adult Content",
+  "action": "block",
+  "enabled": false,
+  "filters": [
+    "dns"
+  ],
+  "traffic": "any(dns.content_category[*] in {4})"
+}
+{
+  "name": "DNS: Block Gambling (Optional)",
+  "action": "block",
+  "enabled": false,
+  "filters": [
+    "dns"
+  ],
+  "traffic": "any(dns.content_category[*] in {23})"
+}
+{
+  "name": "DNS: Custom - Security: Compromised Domain",
+  "action": "block",
+  "enabled": true,
+  "filters": [
+    "dns"
+  ],
+  "traffic": "any(dns.security_category[*] in {187})"
+}
+{
+  "name": "DNS: Custom - Security: Block Malware",
+  "action": "block",
+  "enabled": true,
+  "filters": [
+    "dns"
+  ],
+  "traffic": "any(dns.security_category[*] in {117})"
+}
+{
+  "name": "TLS Policy - Block Expired Certificate Sites",
+  "action": "block",
+  "enabled": true,
+  "filters": [
+    "http"
+  ],
+  "traffic": "http.request.host == \"expired.badssl.com\""
+}
+{
+  "name": "TLS Policy - Block Self-Signed Certificate Sites",
+  "action": "block",
+  "enabled": true,
+  "filters": [
+    "http"
+  ],
+  "traffic": "http.request.host == \"self-signed.badssl.com\""
+}
+{
+  "name": "TLS Policy - Block Revoked Certificate Sites",
+  "action": "block",
+  "enabled": true,
+  "filters": [
+    "http"
+  ],
+  "traffic": "http.request.host == \"revoked.badssl.com\""
+}
+{
+  "name": "TLS Policy - Block Weak Encryption Sites",
+  "action": "block",
+  "enabled": true,
+  "filters": [
+    "http"
+  ],
+  "traffic": "http.request.host in {\"rc4.badssl.com\" \"tls-v1-0.badssl.com\" \"tls-v1-1.badssl.com\"}"
+}
+{
+  "name": "TLS Policy - Block Invalid Hostname Sites",
+  "action": "block",
+  "enabled": true,
+  "filters": [
+    "http"
+  ],
+  "traffic": "http.request.host in {\"wrong.host.badssl.com\" \"untrusted-root.badssl.com\"}"
+}
+{
+  "name": "TLS Policy - Monitor Certificate Test Sites",
+  "action": "allow",
+  "enabled": true,
+  "filters": [
+    "http"
+  ],
+  "traffic": "http.request.host matches \".*\\.badssl\\.com$\""
+}
+{
+  "name": "Network: Allow HTTPS",
+  "action": "allow",
+  "enabled": true,
+  "filters": [
+    "l4"
+  ],
+  "traffic": "net.dst.port == 443"
+}
+{
+  "name": "HTTP: Custom - Network Security: Block Dangerous File Downloads",
+  "action": "block",
+  "enabled": true,
+  "filters": [
+    "http"
+  ],
+  "traffic": "http.request.uri.path matches \".*\\.(exe|scr|bat|cmd|pif|com|vbs|msi|deb|rpm)$\""
+}
+{
+  "name": "HTTP: Block Social Media (Optional)",
+  "action": "block",
+  "enabled": false,
+  "filters": [
+    "http"
+  ],
+  "traffic": "http.request.host == \"facebook.com\""
+}
+{
+  "name": "HTTP: Allow Business Tools",
+  "action": "allow",
+  "enabled": true,
+  "filters": [
+    "http"
+  ],
+  "traffic": "http.request.host == \"office.com\""
+}
+{
+  "name": "L4: Productivity (Allow) - Infrastructure: SSH Access Monitoring",
+  "action": "allow",
+  "enabled": true,
+  "filters": [
+    "l4"
+  ],
+  "traffic": "net.dst.port == 22"
+}
+{
+  "name": "HTTP: Custom - Network Security: Block SQL Injection Attempts",
+  "action": "block",
+  "enabled": true,
+  "filters": [
+    "http"
+  ],
+  "traffic": "http.request.uri.query matches \".*(SELECT|UNION|INSERT|UPDATE|DELETE).*\""
+}
+{
+  "name": "NETWORK: Block Security Risks",
+  "action": "block",
+  "enabled": true,
+  "filters": [
+    "l4"
+  ],
+  "traffic": "any(net.fqdn.security_category[*] in {68 178 80 187 83 176 175 117 131 188 134 191 151 153})"
+}
+{
+  "name": "HTTP: Custom - Network Security: Block XSS Attempts",
+  "action": "block",
+  "enabled": true,
+  "filters": [
+    "http"
+  ],
+  "traffic": "http.request.uri matches \".*(<script|javascript:|onload=|onerror=).*\""
+}
+{
+  "name": "HTTP: Custom - Network Security: Block Admin Path Brute Force",
+  "action": "block",
+  "enabled": true,
+  "filters": [
+    "http"
+  ],
+  "traffic": "http.request.uri.path matches \".*(wp-admin|phpmyadmin|cpanel|admin|administrator).*\" and http.request.method == \"POST\""
+}
+{
+  "name": "Block Crap",
+  "action": "block",
+  "enabled": true,
+  "filters": [
+    "l4"
+  ],
+  "traffic": "net.dst.ip in $63bfc994-e056-4e12-9f37-79d2f0e62e57 or net.src.ip in $63bfc994-e056-4e12-9f37-79d2f0e62e57 or net.sni.host in $0f0e678c-e907-4f7b-a939-b30e25ed17a6"
+}
+{
+  "name": "DNS: Custom - Security: Block Botnets",
+  "action": "block",
+  "enabled": true,
+  "filters": [
+    "dns"
+  ],
+  "traffic": "any(dns.security_category[*] in {80})"
+}
+{
+  "name": "DNS: Custom - Security: Block Phishing",
+  "action": "block",
+  "enabled": true,
+  "filters": [
+    "dns"
+  ],
+  "traffic": "any(dns.security_category[*] in {131})"
+}
+{
+  "name": "HTTP: Custom - App Control: Block Suspicious Downloads",
+  "action": "block",
+  "enabled": true,
+  "filters": [
+    "http"
+  ],
+  "traffic": "http.request.uri.path matches \".*(tmp|temp|cache).*\\.(zip|rar|7z|tar)$\""
+}
+{
+  "name": "DNS: Custom - Security: Block Spam",
+  "action": "block",
+  "enabled": true,
+  "filters": [
+    "dns"
+  ],
+  "traffic": "any(dns.security_category[*] in {151})"
+}
+{
+  "name": "DNS: Custom - Security: Block Command & Control",
+  "action": "block",
+  "enabled": true,
+  "filters": [
+    "dns"
+  ],
+  "traffic": "any(dns.security_category[*] in {68})"
+}
+{
+  "name": "DNS: Block All Security Risks",
+  "action": "block",
+  "enabled": true,
+  "filters": [
+    "dns"
+  ],
+  "traffic": "any(dns.security_category[*] in {68 178 83 176 175 188 134 191 153})"
+}
+{
+  "name": "HTTP: Custom - Risk-Based: Block Common Attack Patterns",
+  "action": "block",
+  "enabled": true,
+  "filters": [
+    "http"
+  ],
+  "traffic": "http.request.uri.path matches \".*(SELECT|UNION|DROP|INSERT|UPDATE|DELETE|script>|javascript:).*\""
+}
+{
+  "name": "L4: Custom - Security: Block High-Risk Countries",
+  "action": "block",
+  "enabled": true,
+  "filters": [
+    "l4"
+  ],
+  "traffic": "net.src.geo.country in {\"CN\" \"RU\" \"KP\" \"IR\" \"BY\" \"MM\" \"SY\" \"AF\"}"
+}
+{
+  "name": "HTTP: Block Security Risks",
+  "action": "block",
+  "enabled": true,
+  "filters": [
+    "http"
+  ],
+  "traffic": "any(http.request.uri.security_category[*] in {68 178 80 187 83 176 175 117 131 188 134 191 151 153})"
+}
+{
+  "name": "DNS: Productivity - Social: Allow Grindr (DNS)",
+  "action": "allow",
+  "enabled": true,
+  "filters": [
+    "dns"
+  ],
+  "traffic": "dns.fqdn in $0df15f7f-dc35-46cb-8ac6-8a827bdbf559"
+}
+{
+  "name": "DNS: Productivity - Allow a.simplemdm.com",
+  "action": "allow",
+  "enabled": true,
+  "filters": [
+    "dns"
+  ],
+  "traffic": "dns.fqdn == \"a.simplemdm.com\""
+}
+{
+  "name": "DNS: Productivity (Allow) - Certificate: OCSP and CRL Infrastructure (DNS)",
+  "action": "allow",
+  "enabled": true,
+  "filters": [
+    "dns"
+  ],
+  "traffic": "dns.fqdn == \"ocsp.digicert.com\" or dns.fqdn == \"ocsp.sectigo.com\" or dns.fqdn == \"ocsp.comodoca.com\" or dns.fqdn == \"ocsp.globalsign.com\" or dns.fqdn == \"ocsp.entrust.net\" or dns.fqdn == \"ocsp.apple.com\" or dns.fqdn == \"ocsp.godaddy.com\" or dns.fqdn == \"ocsp.thawte.com\" or dns.fqdn == \"ocsp.verisign.com\" or dns.fqdn == \"ocsp.symantec.com\" or dns.fqdn == \"ocsp2.globalsign.com\" or dns.fqdn == \"ocsp.identrust.com\" or dns.fqdn == \"ocsp.usertrust.com\" or dns.fqdn == \"ocsp.trust-provider.com\" or dns.fqdn == \"ocsp.letsencrypt.org\" or dns.fqdn == \"r3.o.lencr.org\" or dns.fqdn == \"r4.o.lencr.org\" or dns.fqdn == \"e1.o.lencr.org\" or dns.fqdn == \"e2.o.lencr.org\" or dns.fqdn == \"x1.o.lencr.org\" or dns.fqdn == \"x2.o.lencr.org\" or dns.fqdn == \"crl.digicert.com\" or dns.fqdn == \"crl.sectigo.com\" or dns.fqdn == \"crl.comodoca.com\" or dns.fqdn == \"crl.globalsign.com\" or dns.fqdn == \"crl.entrust.net\" or dns.fqdn == \"crl.apple.com\" or dns.fqdn == \"crl.godaddy.com\" or dns.fqdn == \"crl.thawte.com\" or dns.fqdn == \"crl.verisign.com\" or dns.fqdn == \"crl.symantec.com\" or dns.fqdn == \"crl3.digicert.com\" or dns.fqdn == \"crl4.digicert.com\" or dns.fqdn == \"crl.identrust.com\" or dns.fqdn == \"crl.usertrust.com\" or dns.fqdn == \"crl.letsencrypt.org\" or dns.fqdn == \"cacerts.digicert.com\" or dns.fqdn == \"secure.globalsign.com\" or dns.fqdn == \"apps.identrust.com\" or dns.fqdn == \"letsencrypt.org\" or dns.fqdn == \"isrg.trustid.ocsp.identrust.com\" or dns.fqdn == \"ocsp.int-x3.letsencrypt.org\" or dns.fqdn == \"ocsp.msocsp.com\" or dns.fqdn == \"crl.microsoft.com\" or dns.fqdn == \"mscrl.microsoft.com\" or dns.fqdn == \"ocsp.rootca.microsoft.com\" or dns.fqdn == \"ocsp.apple.com\" or dns.fqdn == \"ocsp2.apple.com\" or dns.fqdn == \"crl.apple.com\" or dns.fqdn == \"ocsp-lb.apple.com.akadns.net\" or dns.fqdn == \"crl-lb.apple.com.akadns.net\" or dns.fqdn == \"ocsp.pki.goog\" or dns.fqdn == \"crl.pki.goog\" or dns.fqdn == \"pki.goog\" or dns.fqdn == \"status.rapidssl.com\" or dns.fqdn == \"ocsp.rapidssl.com\" or dns.fqdn == \"crl.rapidssl.com\" or dns.fqdn == \"ocsp.ssl.com\" or dns.fqdn == \"crl.ssl.com\""
+}
+{
+  "name": "DNS: Productivity (Allow) - Certificate: SSL/TLS Validation Services",
+  "action": "allow",
+  "enabled": true,
+  "filters": [
+    "dns"
+  ],
+  "traffic": "dns.fqdn == \"crt.sh\" or dns.fqdn == \"ct.googleapis.com\" or dns.fqdn == \"ct.cloudflare.com\" or dns.fqdn == \"ocsp.digicert.com\" or dns.fqdn == \"ocsp.letsencrypt.org\" or dns.fqdn == \"crl.digicert.com\" or dns.fqdn == \"crl.letsencrypt.org\" or dns.fqdn == \"r3.o.lencr.org\" or dns.fqdn == \"r4.o.lencr.org\""
+}
+{
+  "name": "DNS: Productivity - Allow NPM Registry",
+  "action": "allow",
+  "enabled": true,
+  "filters": [
+    "dns"
+  ],
+  "traffic": "dns.fqdn in {\"registry.npmjs.org\" \"registry.yarnpkg.com\" \"npmjs.com\" \"yarnpkg.com\"}"
+}
+{
+  "name": "DNS: Productivity - Allow GitHub",
+  "action": "allow",
+  "enabled": true,
+  "filters": [
+    "dns"
+  ],
+  "traffic": "dns.fqdn in {\"github.com\" \"api.github.com\" \"raw.githubusercontent.com\" \"objects.githubusercontent.com\"}"
+}
+{
+  "name": "DNS: Productivity - Allow OpenAI API",
+  "action": "allow",
+  "enabled": true,
+  "filters": [
+    "dns"
+  ],
+  "traffic": "dns.fqdn in {\"api.openai.com\" \"openai.com\"}"
+}
+{
+  "name": "DNS: Productivity - Allow Cloudflare API",
+  "action": "allow",
+  "enabled": true,
+  "filters": [
+    "dns"
+  ],
+  "traffic": "dns.fqdn in {\"api.cloudflare.com\" \"workers.dev\" \"*.workers.dev\" \"*.cloudflareclient.com\"}"
+}
+{
+  "name": "DNS: Productivity - Allow Apple Homekit and Google Home Ecosystems",
+  "action": "allow",
+  "enabled": true,
+  "filters": [
+    "dns"
+  ],
+  "traffic": "dns.fqdn in $419dd8d5-b0a0-4892-ab87-9c663735727a or (dns.fqdn in $fa64ba26-c470-4273-b251-c75ce17280b6 or dns.fqdn in {\"apple-cloudkit.com\" \"apple-livephotoskit.com\" \"nest.com\" \"google-home.com\" \"home.nest.com\"}) or dns.fqdn matches \".*\\.local\\.home\""
+}
+{
+  "name": "Microsoft 365 Auto Generated",
+  "action": "off",
+  "enabled": true,
+  "filters": [
+    "http"
+  ],
+  "traffic": "any(app.ids[*] in {626 594 635 514 601 596 597 680})"
+}

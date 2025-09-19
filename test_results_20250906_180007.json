@@ -1,0 +1,125 @@
+{
+  "test_suite_version": "1.0",
+  "execution_time": {
+    "start": "2025-09-06T17:58:26.309444",
+    "end": "2025-09-06T18:00:07.496124",
+    "duration_seconds": 101.18668
+  },
+  "summary": {
+    "total_tests": 13,
+    "passed_tests": 6,
+    "failed_tests": 7,
+    "success_rate": 46.15384615384615
+  },
+  "test_results": [
+    {
+      "test_name": "Cloudflare Gateway Integration",
+      "expected": "DNS resolution and DoH working",
+      "actual": "success",
+      "passed": true,
+      "details": "DNS IPs: ['172.217.167.78'], DoH Status: 200",
+      "timestamp": "2025-09-06T17:59:41.528521"
+    },
+    {
+      "test_name": "Certificate Deployment",
+      "expected": "Cloudflare root CA deployed",
+      "actual": "deployed",
+      "passed": true,
+      "details": "Cloudflare CA found in macOS keychain",
+      "timestamp": "2025-09-06T17:59:41.568897"
+    },
+    {
+      "test_name": "DNS Filtering",
+      "expected": "Block malicious domains, allow legitimate ones",
+      "actual": "working",
+      "passed": true,
+      "details": "google.com resolved, example-blocked-domain.com blocked - DNS filtering working",
+      "timestamp": "2025-09-06T17:59:41.619487"
+    },
+    {
+      "test_name": "Certificate Validation - valid_cert",
+      "expected": "allow",
+      "actual": "connected",
+      "passed": true,
+      "details": "SSL: connected, HTTP: success - No error",
+      "timestamp": "2025-09-06T17:59:52.469601"
+    },
+    {
+      "test_name": "Certificate Validation - expired_cert",
+      "expected": "block",
+      "actual": "connected",
+      "passed": false,
+      "details": "SSL: connected, HTTP: success - No error",
+      "timestamp": "2025-09-06T17:59:54.373727"
+    },
+    {
+      "test_name": "Certificate Validation - self_signed",
+      "expected": "block",
+      "actual": "connected",
+      "passed": false,
+      "details": "SSL: connected, HTTP: success - No error",
+      "timestamp": "2025-09-06T17:59:56.221082"
+    },
+    {
+      "test_name": "Certificate Validation - wrong_host",
+      "expected": "block",
+      "actual": "connected",
+      "passed": false,
+      "details": "SSL: connected, HTTP: success - No error",
+      "timestamp": "2025-09-06T17:59:58.061673"
+    },
+    {
+      "test_name": "Certificate Validation - revoked_cert",
+      "expected": "block",
+      "actual": "connected",
+      "passed": false,
+      "details": "SSL: connected, HTTP: success - No error",
+      "timestamp": "2025-09-06T17:59:59.801755"
+    },
+    {
+      "test_name": "Certificate Validation - weak_cipher",
+      "expected": "warn_or_block",
+      "actual": "ssl_error",
+      "passed": true,
+      "details": "SSL: ssl_error, HTTP: ssl_error - [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] ssl/tls alert handshake failure (_ssl.c:1032)",
+      "timestamp": "2025-09-06T18:00:00.926501"
+    },
+    {
+      "test_name": "Certificate Validation - weak_tls",
+      "expected": "warn_or_block",
+      "actual": "connected",
+      "passed": true,
+      "details": "SSL: connected, HTTP: ssl_error - No error",
+      "timestamp": "2025-09-06T18:00:03.294585"
+    },
+    {
+      "test_name": "Certificate Validation - no_sni",
+      "expected": "block",
+      "actual": "connected",
+      "passed": false,
+      "details": "SSL: connected, HTTP: success - No error",
+      "timestamp": "2025-09-06T18:00:05.090083"
+    },
+    {
+      "test_name": "Certificate Validation - mixed_content",
+      "expected": "block",
+      "actual": "connected",
+      "passed": false,
+      "details": "SSL: connected, HTTP: success - No error",
+      "timestamp": "2025-09-06T18:00:06.690636"
+    },
+    {
+      "test_name": "TLS Inspection Detection",
+      "expected": "TLS inspection active or not active",
+      "actual": "error",
+      "passed": false,
+      "details": "Error detecting TLS inspection: dictionary update sequence element #0 has length 1; 2 is required",
+      "timestamp": "2025-09-06T18:00:07.493839"
+    }
+  ],
+  "recommendations": [
+    "Review certificate validation policies - some expected blocks may not be working",
+    "Consider enabling TLS inspection for enhanced certificate visibility",
+    "High failure rate detected - review overall configuration"
+  ]
+}

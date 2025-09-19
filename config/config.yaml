@@ -1,0 +1,107 @@
+# UCG Certificate Monitor Configuration
+
+# Network Monitoring Settings
+network:
+  interface: "en0"  # Network interface to monitor (change as needed)
+  capture_filter: "tcp port 443 or tcp port 80"
+  promiscuous_mode: true
+  packet_buffer_size: 2048
+  timeout_seconds: 5
+
+# UCG Integration
+ucg:
+  enabled: true  # Enabled for network discovery and device detection
+  api_endpoints:
+    - "https://192.168.22.1"  # UniFi controller (mars.int.bozza.au)
+    - "https://mars.int.bozza.au"  # UniFi controller hostname
+  auth:
+    username: "${UCG_USERNAME}"
+    password: "${UCG_PASSWORD}"
+    api_key: "${UCG_API_KEY}"
+  polling_interval: 300  # seconds
+  timeout: 30
+  discovery_ranges:
+    - "192.168.22.0/24"  # Scan local network for UCG devices
+    - "192.168.1.0/24"   # Common router network range
+
+# Certificate Validation
+certificates:
+  baseline_storage: "data/baseline_certificates.db"
+  validation_rules:
+    check_expiry: true
+    check_issuer: true
+    check_subject: true
+    check_fingerprint: true
+    check_signature_algorithm: true
+  alert_on:
+    - "issuer_mismatch"
+    - "fingerprint_change"
+    - "expiry_soon"
+    - "unknown_certificate"
+    - "weak_signature"
+  expiry_warning_days: 30
+
+# Alerting Configuration
+alerting:
+  enabled: false  # Disabled for development - no real alerting endpoints configured
+  channels:
+    email:
+      enabled: true
+      smtp_server: "${SMTP_SERVER}"
+      smtp_port: 587
+      username: "${EMAIL_USERNAME}"
+      password: "${EMAIL_PASSWORD}"
+      from_address: "${EMAIL_FROM}"
+      to_addresses:
+        - "admin@example.com"
+        - "security@example.com"
+    slack:
+      enabled: true
+      webhook_url: "${SLACK_WEBHOOK_URL}"
+      channel: "#security-alerts"
+      username: "UCG-CertMonitor"
+    sms:
+      enabled: false
+      twilio_sid: "${TWILIO_SID}"
+      twilio_token: "${TWILIO_TOKEN}"
+      from_number: "${TWILIO_FROM}"
+      to_numbers:
+        - "+1234567890"
+
+# Database Configuration
+database:
+  type: "sqlite"
+  path: "data/cert_monitor.db"
+  backup_enabled: true
+  backup_interval_hours: 24
+
+# Dashboard Settings
+dashboard:
+  enabled: true
+  host: "0.0.0.0"
+  port: 8080
+  debug: false
+  auto_refresh_seconds: 30
+
+# Logging Configuration
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file_path: "logs/cert_monitor.log"
+  max_size_mb: 100
+  backup_count: 5
+  console_output: true
+
+# Security Settings
+security:
+  require_authentication: true
+  session_timeout_minutes: 60
+  max_failed_attempts: 5
+  lockout_duration_minutes: 15
+
+# Monitoring and Metrics
+monitoring:
+  prometheus_enabled: true
+  prometheus_port: 9090
+  health_check_interval: 60
+  performance_metrics: true
